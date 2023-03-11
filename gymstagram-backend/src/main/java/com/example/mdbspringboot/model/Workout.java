@@ -1,3 +1,7 @@
+/**
+
+This class represents the Model for Workout entity
+*/
 package com.example.mdbspringboot.model;
 
 import org.springframework.data.annotation.Id;
@@ -6,72 +10,69 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("Workout")
 public class Workout {
 
+	@Id
+	private String id;
+	private String name;
+	private int reps;
+	private int sets;
+	private int weight;
+	private int duration;
+	
+	public Workout(String id, String name, int reps, int sets, int weight, int duration) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.reps = reps;
+		this.sets = sets;
+		this.weight = weight;
+		this.duration = duration;
+	}
 
+	public String getId() {
+		return id;
+	}
 
-		@Id
-		private String id;
+	public void setId(String id) {
+		this.id = id;
+	}
 
-		private String name;
-		private int reps;
-		private int sets;
-        private int weight;
-        private int duration;
-		
-		public Workout(String id, String name, int reps, int sets, int weight, int duration) {
-			super();
-			this.id = id;
-			this.name = name;
-			this.reps = reps;
-            this.sets = sets;
-            this.weight = weight;
-            this.duration = duration;
-		}
+	public String getName() {
+		return name;
+	}
 
-		public String getId() {
-			return id;
-		}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-		public void setId(String id) {
-			this.id = id;
-		}
+	public int getReps() {
+		return reps;
+	}
 
-		public String getName() {
-			return name;
-		}
+	public void setReps(int reps) {
+		this.reps = reps;
+	}
 
-		public void setName(String name) {
-			this.name = name;
-		}
+	public int getSets() {
+		return sets;
+	}
+	
+	public void setSets(int sets) {
+		this.sets = sets;
+	}
 
-		public int getReps() {
-			return reps;
-		}
+	public int getWeight() {
+		return weight;
+	}
 
-		public void setReps(int reps) {
-			this.reps = reps;
-		}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
 
-        public int getSets() {
-            return sets;
-        }
-        
-        public void setSets(int sets) {
-            this.sets = sets;
-        }
+	public int getDuration() {
+		return duration;
+	}
 
-        public int getWeight() {
-            return weight;
-        }
-
-        public void setWeight(int weight) {
-            this.weight = weight;
-        }
-
-        public int getDuration() {
-            return duration;
-        }
-
-        public void setDuration(int duration) {
-            this.duration = duration;
-        }
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
 }
