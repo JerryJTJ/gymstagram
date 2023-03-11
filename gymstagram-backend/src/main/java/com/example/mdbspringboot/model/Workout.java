@@ -1,3 +1,7 @@
+/**
+
+This class represents the Model for Workout entity
+*/
 package com.example.mdbspringboot.model;
 
 import org.springframework.data.annotation.Id;
