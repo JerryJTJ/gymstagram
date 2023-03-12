@@ -4,14 +4,15 @@ This readme is to initialize the backend of gymstagram and gives a brief overive
 Before you can start the backend, you'll need to have the following tools installed:
 
 - [Java Development Kit (JDK) 17](https://www.oracle.com/ca-en/java/technologies/downloads/#java17)
-- [MongoDB (Optional)](https://www.mongodb.com/try/download/community-kubernetes-operator)
+- [MongoDB](https://www.mongodb.com/try/download/community-kubernetes-operator)
 
 Very important Note: Ask Jason or Matt to add your Connection IP Address to our IP Access List in our MongoDB 
 
 # Getting Started
 
 1) Clone this repository to your local machine.
-2) To run the backend using a local database, add ```spring.data.mongodb.uri=mongodb://localhost:27017/test``` to ```gymstagram-backend\src\main\resources\application.properties```
+2) - **Running locally:** To run the backend using a local database, add ```spring.data.mongodb.uri=mongodb://localhost:27017/test``` in ```gymstagram-backend\src\main\resources\application.properties```
+   - **Running in prod:** Ask Matt or Jason for the access password and replace ```<pw>``` with the given password in ```spring.data.mongodb.uri=mongodb+srv://admin:<pw>@gymstagram.fjbdxhz.mongodb.net/gymstagram``` in ```gymstagram-backend\src\main\resources\application.properties```
 3) Start the backend by runing the following command  ```./gradlew bootRun```
 4) You should now be able to access the backend at http://localhost:8080
 
