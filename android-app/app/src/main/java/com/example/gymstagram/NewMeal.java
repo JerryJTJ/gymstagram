@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gymstagram.databinding.FragmentNewMealBinding;
-import com.example.gymstagram.databinding.FragmentNewWorkoutBinding;
 
 public class NewMeal extends Fragment {
 

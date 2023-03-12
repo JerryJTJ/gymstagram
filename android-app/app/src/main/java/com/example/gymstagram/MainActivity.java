@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -24,14 +22,16 @@ import com.example.gymstagram.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.Arrays;
-import java.util.List;
+import utils.Utils;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private BottomNavigationView bottomNavigationView;
+
+    Utils utils = new Utils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
 //      Bottom Navigation Bar
         bottomNavigationView = findViewById(R.id.bottom_nav_menu);
@@ -70,52 +62,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Button handlers
-        List<Integer> mainFragments = List.of(R.id.homeFeed, R.id.loginFragment);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-                        int currentFragmentId = currentFragment.getId();
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.nav_menu_add:
 
-                        switch (item.getItemId()) {
-                            case R.id.nav_menu_add:
+                            //Clear stack inclusive up to last add
+                            if(utils.isDestinationInNavStack(R.id.addFragment, navController)){
+                                navController.popBackStack(R.id.addFragment, true);
+                            }
 
-                                FragmentManager fragmentManager = getSupportFragmentManager();
+                             navController.navigate(R.id.addFragment);
 
-                                if (!(currentFragment instanceof FirstFragment)) {
+                            return true;
 
-                                    // Close all fragments except mainFragments
+                        case R.id.nav_menu_home:
 
-                                    for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
-                                        int fragmentId = fragmentManager.getBackStackEntryAt(i).getId();
-                                        if (!mainFragments.contains(currentFragmentId)) {
-                                            fragmentManager.popBackStack();
-                                        }
-                                    }
-
-                                    // Navigate to FirstFragment
-                                    navController.navigate(R.id.addFragment);
-                                }
+                            if(navController.getCurrentDestination().getId() == R.id.homeFeed){
+                                //Scroll to top or some other functionality
                                 return true;
+                            }
 
-                            case R.id.nav_menu_home:
-                                navController.navigate(R.id.homeFeed);
+                            //If home exists, go back to existing home screen
+                            if(utils.isDestinationInNavStack(R.id.homeFeed, navController)){
+                                navController.popBackStack(R.id.homeFeed, false);
                                 return true;
+                            }
 
-                            case R.id.nav_menu_profile:
-                                // Handle profile button click
-                                return true;
+                            //If home doesn't, create it (should never be the case)
+                            navController.navigate(R.id.homeFeed);
+                            return true;
 
-                            case R.id.nav_menu_settings:
-                                // Handle settings button click
-                                return true;
+                        case R.id.nav_menu_profile:
+                            // Handle profile button click
+                            return true;
 
-                            default:
-                                return false;
-                        }
+                        case R.id.nav_menu_settings:
+                            // Handle settings button click
+                            return true;
+
+                        default:
+                            return false;
                     }
                 });
 
