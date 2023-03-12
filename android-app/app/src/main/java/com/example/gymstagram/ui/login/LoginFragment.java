@@ -121,7 +121,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_FirstFragment);
+                        .navigate(R.id.action_loginFragment_to_homeFeed);
 
 //                Implement Login Feature:
 //                loadingProgressBar.setVisibility(View.VISIBLE);

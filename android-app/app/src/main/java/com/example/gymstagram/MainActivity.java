@@ -2,13 +2,19 @@ package com.example.gymstagram;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -18,10 +24,14 @@ import com.example.gymstagram.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,73 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+//      Bottom Navigation Bar
+        bottomNavigationView = findViewById(R.id.bottom_nav_menu);
+
+        // Hide the BottomNavigationView on the LoginFragment
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController,
+                                             @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                if (navDestination.getId() == R.id.loginFragment) {
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        //Button handlers
+        List<Integer> mainFragments = List.of(R.id.homeFeed, R.id.loginFragment);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
+                        int currentFragmentId = currentFragment.getId();
+
+                        switch (item.getItemId()) {
+                            case R.id.nav_menu_add:
+
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                                if (!(currentFragment instanceof FirstFragment)) {
+
+                                    // Close all fragments except mainFragments
+
+                                    for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+                                        int fragmentId = fragmentManager.getBackStackEntryAt(i).getId();
+                                        if (!mainFragments.contains(currentFragmentId)) {
+                                            fragmentManager.popBackStack();
+                                        }
+                                    }
+
+                                    // Navigate to FirstFragment
+                                    navController.navigate(R.id.addFragment);
+                                }
+                                return true;
+
+                            case R.id.nav_menu_home:
+                                navController.navigate(R.id.homeFeed);
+                                return true;
+
+                            case R.id.nav_menu_profile:
+                                // Handle profile button click
+                                return true;
+
+                            case R.id.nav_menu_settings:
+                                // Handle settings button click
+                                return true;
+
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+
     }
 
     @Override

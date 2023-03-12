@@ -6,20 +6,23 @@
     app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/addFragment"
         android:name="com.example.gymstagram.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_newWorkout"
-            app:destination="@id/newWorkout" />
+            app:destination="@id/newWorkout"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_FirstFragment_to_newPost"
-            app:destination="@id/newPost" />
+            app:destination="@id/newPost"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_FirstFragment_to_newMeal"
-            app:destination="@id/newMeal" />
+            app:destination="@id/newMeal"
+            app:launchSingleTop="true"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -27,8 +30,8 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_loginFragment_to_homeFeed"
+            app:destination="@id/homeFeed" />
     </fragment>
     <fragment
         android:id="@+id/newWorkout"
@@ -72,5 +75,15 @@
             android:id="@+id/action_photoWorkout_pop"
             app:popUpTo="@id/photoWorkout"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFeed"
+        android:name="com.example.gymstagram.HomeFeed"
+        android:label="fragment_home_feed"
+        tools:layout="@layout/fragment_home_feed" >
+        <action
+            android:id="@+id/action_homeFeed_to_FirstFragment"
+            app:destination="@id/addFragment"
+            app:launchSingleTop="true" />
     </fragment>
 </navigation>

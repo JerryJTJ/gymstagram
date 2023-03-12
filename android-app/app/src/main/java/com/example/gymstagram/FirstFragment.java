@@ -15,6 +15,10 @@ public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
 
+    public FirstFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
