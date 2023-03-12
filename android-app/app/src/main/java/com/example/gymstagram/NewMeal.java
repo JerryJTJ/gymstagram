@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gymstagram.databinding.FragmentNewMealBinding;
-import com.example.gymstagram.databinding.FragmentNewWorkoutBinding;
 
 public class NewMeal extends Fragment {
 
@@ -30,6 +29,13 @@ public class NewMeal extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler
+            }
+        });
 
         binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override

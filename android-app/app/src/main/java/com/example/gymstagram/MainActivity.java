@@ -2,13 +2,17 @@ package com.example.gymstagram;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -18,10 +22,16 @@ import com.example.gymstagram.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import utils.Utils;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private BottomNavigationView bottomNavigationView;
+
+    Utils utils = new Utils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +41,80 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+//      Bottom Navigation Bar
+        bottomNavigationView = findViewById(R.id.bottom_nav_menu);
+
+        // Hide the BottomNavigationView on the LoginFragment
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController,
+                                             @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                if (navDestination.getId() == R.id.loginFragment) {
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+//      Navigation buttons
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.nav_menu_add:
+
+                            //Do nothing if currently on add page
+                            if(navController.getCurrentDestination().getId() == R.id.addFragment){
+                                return true;
+                            }
+
+                            //Clear stack inclusive up to last add
+                            if(utils.isDestinationInNavStack(R.id.addFragment, navController)){
+                                navController.popBackStack(R.id.addFragment, true);
+                            }
+
+                             navController.navigate(R.id.addFragment);
+
+                            return true;
+
+                        case R.id.nav_menu_home:
+
+                            if(navController.getCurrentDestination().getId() == R.id.homeFeed){
+                                //Scroll to top or some other functionality
+                                return true;
+                            }
+
+                            //If home exists, go back to existing home screen
+                            if(utils.isDestinationInNavStack(R.id.homeFeed, navController)){
+                                navController.popBackStack(R.id.homeFeed, false);
+                                return true;
+                            }
+
+                            //If home doesn't, create it (should never be the case)
+                            navController.navigate(R.id.homeFeed);
+                            return true;
+
+                        case R.id.nav_menu_profile:
+                            // Handle profile button click
+                            return true;
+
+                        case R.id.nav_menu_settings:
+                            // Handle settings button click
+                            return true;
+
+                        default:
+                            return false;
+                    }
+                });
+
+
     }
 
     @Override
@@ -59,10 +131,9 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
