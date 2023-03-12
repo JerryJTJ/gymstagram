@@ -42,6 +42,9 @@
             android:id="@+id/action_newWorkout_pop"
             app:popUpTo="@id/newWorkout"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_newWorkout_to_photoWorkout"
+            app:destination="@id/photoWorkout" />
     </fragment>
     <fragment
         android:id="@+id/newPost"
@@ -61,6 +64,16 @@
         <action
             android:id="@+id/action_newMeal_pop"
             app:popUpTo="@id/newMeal"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoWorkout"
+        android:name="com.example.gymstagram.photoWorkout"
+        android:label="fragment_photo_workout"
+        tools:layout="@layout/fragment_photo_workout" >
+        <action
+            android:id="@+id/action_photoWorkout_pop"
+            app:popUpTo="@id/photoWorkout"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
