@@ -30,11 +30,46 @@ public class NewPost extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.buttonUploadMedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler here
+            }
+        });
+
+        binding.buttonAddLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler here
+            }
+        });
+
+        binding.buttonLinkToWorkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler here
+            }
+        });
+
+        binding.buttonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler here
+            }
+        });
+
         binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(NewPost.this)
                         .navigate(R.id.action_newPost_pop);
+            }
+        });
+
+        binding.buttonShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Handler here
             }
         });
     }

@@ -21,7 +21,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="64dp"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/Theme.Gymstagram.PopupOverlay" >
             </androidx.appcompat.widget.Toolbar>
@@ -29,11 +29,13 @@
             <TextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="64dp"
                 android:gravity="center"
                 android:text="Gymstagram"
+                android:fontFamily="@font/pacifico"
+                app:fontFamily="@font/pacifico"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 

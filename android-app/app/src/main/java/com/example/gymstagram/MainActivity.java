@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.nav_menu_add:
 
+                            //Do nothing if currently on add page
+                            if(navController.getCurrentDestination().getId() == R.id.addFragment){
+                                return true;
+                            }
+
                             //Clear stack inclusive up to last add
                             if(utils.isDestinationInNavStack(R.id.addFragment, navController)){
                                 navController.popBackStack(R.id.addFragment, true);
