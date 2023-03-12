@@ -108,7 +108,7 @@
 
 
     <Button
-        android:id="@+id/workoutphoto"
+        android:id="@+id/button_add_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="264dp"

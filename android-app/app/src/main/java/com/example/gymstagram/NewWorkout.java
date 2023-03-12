@@ -37,6 +37,15 @@ public class NewWorkout extends Fragment {
                         .navigate(R.id.action_newWorkout_pop);
             }
         });
+
+        binding.buttonAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(NewWorkout.this)
+                        .navigate(R.id.action_newWorkout_to_photoWorkout);
+            }
+        });
+
     }
 
     @Override
