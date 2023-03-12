@@ -16,6 +16,10 @@ public class HomeFeed extends Fragment {
 
     private FragmentHomeFeedBinding binding;
 
+    public HomeFeed() {
+        // Required empty public constructor
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
