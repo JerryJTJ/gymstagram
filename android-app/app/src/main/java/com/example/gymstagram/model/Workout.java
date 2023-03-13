@@ -1,6 +1,6 @@
-package com.example.gymstagram;
+package com.example.gymstagram.model;
 
-public class WorkoutRequest {
+public class Workout {
     private String name;
     private int reps;
     private int sets;
