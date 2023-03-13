@@ -3,6 +3,10 @@ package com.example.gymstagram;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gymstagram.databinding.ActivityMainBinding;
 import com.example.gymstagram.databinding.FragmentNewWorkoutBinding;
@@ -43,14 +48,72 @@ public class NewWorkout extends Fragment {
 
         binding = FragmentNewWorkoutBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.fragment_new_workout, container, false);
-        TextView name = view.findViewById(R.id.name);
+        name = view.findViewById(R.id.name);
+        reps = view.findViewById(R.id.reps);
+        sets = view.findViewById(R.id.sets);
+        weight = view.findViewById(R.id.weight);
+        duration = view.findViewById(R.id.duration);
+        add_workout = view.findViewById(R.id.add_workout);
+
+        add_workout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveWorkout(createRequest());
+            }
+        });
+
         return binding.getRoot();
 
 
     }
 
+    public WorkoutRequest createRequest(){
+        WorkoutRequest workoutRequest = new WorkoutRequest();
+        workoutRequest.setName(name.getText().toString());
+        workoutRequest.setReps(Integer.parseInt(reps.getText().toString()));
+        workoutRequest.setSets(Integer.parseInt(sets.getText().toString()));
+        workoutRequest.setWeight(Integer.parseInt(weight.getText().toString()));
+        workoutRequest.setDuration(Integer.parseInt(duration.getText().toString()));
+
+        return workoutRequest;
+    }
+
+    public void saveWorkout(WorkoutRequest workoutRequest) {
+        Call<WorkoutResponse> workoutResponseCall = ApiClient.getWorkoutService().saveWorkout(workoutRequest);
+        workoutResponseCall.enqueue(new Callback<WorkoutResponse>() {
+            @Override
+            public void onResponse(Call<WorkoutResponse> call, Response<WorkoutResponse> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WorkoutResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "Request has Failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        name = view.findViewById(R.id.name);
+        reps = view.findViewById(R.id.reps);
+        sets = view.findViewById(R.id.sets);
+        weight = view.findViewById(R.id.weight);
+        duration = view.findViewById(R.id.duration);
+        add_workout = view.findViewById(R.id.add_workout);
+
+        add_workout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveWorkout(createRequest());
+            }
+        });
 
         binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
