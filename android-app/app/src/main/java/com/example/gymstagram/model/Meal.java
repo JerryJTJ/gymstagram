@@ -13,16 +13,16 @@ public class Meal {
         this.fat = fat;
     }
 
-    public String id;
-    public String name;
-    public int calories;
-    public int carbs;
-    public int protein;
-    public int fat;
+    private String id;
+    private String name;
+    private int calories;
+    private int carbs;
+    private int protein;
+    private int fat;
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Meal{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", calories='" + calories + '\'' +

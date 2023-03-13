@@ -50,6 +50,7 @@ public class NewMeal extends Fragment {
             @Override
             public void onClick(View view) {
 
+                //Get fields
                 String name = utils.convertEditTextToString(binding.inputName);
 
                 if(name.equals("")){
@@ -63,14 +64,16 @@ public class NewMeal extends Fragment {
                 int protein = utils.convertEditTextToInt(binding.inputProtein);
                 int fat = utils.convertEditTextToInt(binding.inputFat);
 
+                //Create retrofit service
                 RetrofitService retrofitService = new RetrofitService();
                 MealAPI mealAPI = retrofitService.getRetrofit().create(MealAPI.class);
                 Meal newMeal = new Meal(id, name, calories, carbs, protein, fat);
 
+                //POST
                 mealAPI.createMeal(newMeal).enqueue(new Callback<Meal>() {
                     @Override
                     public void onResponse(Call<Meal> call, Response<Meal> response) {
-                        //Success, go back to add;
+                        //Success, go back to add
                         NavHostFragment.findNavController(NewMeal.this).popBackStack(R.id.addFragment, false);
                     }
 

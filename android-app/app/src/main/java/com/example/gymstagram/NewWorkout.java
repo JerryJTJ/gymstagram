@@ -8,26 +8,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.gymstagram.databinding.ActivityMainBinding;
+import utils.Utils;
+
 import com.example.gymstagram.databinding.FragmentNewWorkoutBinding;
+import com.example.gymstagram.model.Workout;
+import com.example.gymstagram.retrofit.ApiClient;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class NewWorkout extends Fragment {
 
     private FragmentNewWorkoutBinding binding;
+    Utils utils = new Utils();
 
     TextInputEditText name, reps, sets, weight, duration;
     Button add_workout;
@@ -67,19 +64,19 @@ public class NewWorkout extends Fragment {
 
     }
 
-    public WorkoutRequest createRequest(){
-        WorkoutRequest workoutRequest = new WorkoutRequest();
-        workoutRequest.setName(name.getText().toString());
-        workoutRequest.setReps(Integer.parseInt(reps.getText().toString()));
-        workoutRequest.setSets(Integer.parseInt(sets.getText().toString()));
-        workoutRequest.setWeight(Integer.parseInt(weight.getText().toString()));
-        workoutRequest.setDuration(Integer.parseInt(duration.getText().toString()));
+    public Workout createRequest(){
+        Workout workout = new Workout();
+        workout.setName(utils.convertEditTextToString(name));
+        workout.setReps(utils.convertEditTextToInt(reps));
+        workout.setSets(utils.convertEditTextToInt(sets));
+        workout.setWeight(utils.convertEditTextToInt(weight));
+        workout.setDuration(utils.convertEditTextToInt(duration));
 
-        return workoutRequest;
+        return workout;
     }
 
-    public void saveWorkout(WorkoutRequest workoutRequest) {
-        Call<WorkoutResponse> workoutResponseCall = ApiClient.getWorkoutService().saveWorkout(workoutRequest);
+    public void saveWorkout(Workout workout) {
+        Call<WorkoutResponse> workoutResponseCall = ApiClient.getWorkoutService().saveWorkout(workout);
         workoutResponseCall.enqueue(new Callback<WorkoutResponse>() {
             @Override
             public void onResponse(Call<WorkoutResponse> call, Response<WorkoutResponse> response) {

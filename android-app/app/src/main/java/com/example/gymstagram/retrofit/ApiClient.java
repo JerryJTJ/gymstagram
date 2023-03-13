@@ -1,4 +1,6 @@
-package com.example.gymstagram;
+package com.example.gymstagram.retrofit;
+
+import com.example.gymstagram.retrofit.WorkoutAPI;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -24,8 +26,8 @@ public class ApiClient {
         return retrofit;
     }
 
-    public static WorkoutService getWorkoutService(){
-        WorkoutService workoutService = getRetrofit().create(WorkoutService.class);
-        return workoutService;
+    public static WorkoutAPI getWorkoutService(){
+        WorkoutAPI workoutAPI = getRetrofit().create(WorkoutAPI.class);
+        return workoutAPI;
     }
 }
