@@ -19,7 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+>>>>>>> 4aabf93 (new connection)
 
 import com.example.gymstagram.databinding.ActivityMainBinding;
 import com.example.gymstagram.databinding.FragmentNewWorkoutBinding;
@@ -48,6 +51,7 @@ public class NewWorkout extends Fragment {
 
         binding = FragmentNewWorkoutBinding.inflate(inflater, container, false);
         View view = inflater.inflate(R.layout.fragment_new_workout, container, false);
+<<<<<<< HEAD
         name = view.findViewById(R.id.name);
         reps = view.findViewById(R.id.reps);
         sets = view.findViewById(R.id.sets);
@@ -95,6 +99,12 @@ public class NewWorkout extends Fragment {
                 Toast.makeText(getActivity(), "Request has Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+=======
+        TextView name = view.findViewById(R.id.name);
+        return binding.getRoot();
+
+
+>>>>>>> 4aabf93 (new connection)
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
