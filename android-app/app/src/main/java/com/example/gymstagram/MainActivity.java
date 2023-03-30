@@ -101,12 +101,12 @@ public class MainActivity extends AppCompatActivity {
                             navController.navigate(R.id.homeFeed);
                             return true;
 
-                        case R.id.nav_menu_profile:
-                            // Handle profile button click
+                        case R.id.nav_menu_history:
+                            // Handle workout/meal history button click
                             return true;
 
-                        case R.id.nav_menu_settings:
-                            // Handle settings button click
+                        case R.id.nav_menu_users:
+                            // Handle users button click
                             return true;
 
                         default:
