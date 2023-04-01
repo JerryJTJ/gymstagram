@@ -52,3 +52,32 @@ Posts Endpoint:
 
    - ```PUT /posts/{id}/like``` Like a post by id
    - ```PUT /posts/{id}/unlike``` Unlike a post by id
+
+Users Endpoint:
+
+User schema:
+```
+{
+   id: ID,
+   username: String,
+   password: String,
+   email: String,
+   following: List<String>,
+   currentWeight: Float,
+   targetWeight: Float
+}
+```
+
+LoginBody schema:
+```
+{
+   username: String,
+   password: String
+}
+```
+- ```GET /users``` Get all users
+- ```GET /users/{id}``` Get a user by id
+- ```POST /users``` Create a new user 
+- ```POST /users/login``` Returns user if username/password combination found, null otherwise
+- ```PUT /users/{id}``` Update a user by id
+- ```DELETE /users/{id}``` Delete a user by id
