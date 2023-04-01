@@ -56,6 +56,16 @@ public class PostController {
         return postService.updatePost(id, post);
     }
 
+    @PutMapping("/{id}/like")
+    public void likePost(@PathVariable String id) {
+        postService.incrementPostLike(id);
+    }
+
+    @PutMapping("/{id}/unlike")
+    public void unlikePost(@PathVariable String id) {
+        postService.decrementPostLike(id);
+    }
+
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable String id) {
         postService.deletePost(id);
@@ -65,5 +75,4 @@ public class PostController {
     public void deleteCommentFromPost(@PathVariable String id, @PathVariable String commentId) {
         postService.deleteCommentFromPost(id, commentId);
     }
-
 }
