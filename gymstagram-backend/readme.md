@@ -32,5 +32,15 @@ Workouts Endpoint:
 - ```GET /workouts``` Get all workouts
 - ```GET /workouts/{id}``` Get a workout by id
 - ```POST /workouts``` Add a new workout
-- ```PUT /workouts/{id}``` Updates a workout by id
+- ```PUT /workouts/{id}``` Update a workout by id
 - ```DELETE /workouts/{id}``` Delete a workout by id
+
+Posts Endpoint:
+- ```GET /posts``` Get all posts
+- ```GET /posts/{id}``` Get a post by id
+- ```GET /posts/user/{userId}``` Get all posts by User id
+- ```POST /posts``` Add a new post
+- ```POST /posts/{id}/comment``` Add a new comment to an existing post with id
+- ```PUT /posts/{id}``` Update a post by id
+- ```DELETE /posts/{id}``` Delete a post by id
+- ```DELETE /posts/{id}/comment/{commentId}``` Delete a comment with commentId from a post with id
