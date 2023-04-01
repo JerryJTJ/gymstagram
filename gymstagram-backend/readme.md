@@ -17,45 +17,9 @@ Very important Note: Ask Jason or Matt to add your Connection IP Address to our 
 4) You should now be able to access the backend at http://localhost:8080. If Port 8080 already in use, add the following line in ```gymstagram-backend\src\main\resources\application.properties```, ```server.port = 8081```.
 
 
-# API endpoints
+# Schemas
 
-Here are the available API endpoints:
-
-Meals Endpoint:
-- ```GET /meals``` Get all meals
-- ```GET /meals/{id}``` Get a meal by id
-- ```POST /meals``` Add a new meal
-- ```PUT /meals/{id}``` Update a meal by id
-- ```DELETE /meals/{id}``` Delete a meal by id
-
-Workouts Endpoint:
-- ```GET /workouts``` Get all workouts
-- ```GET /workouts/{id}``` Get a workout by id
-- ```POST /workouts``` Add a new workout
-- ```PUT /workouts/{id}``` Update a workout by id
-- ```DELETE /workouts/{id}``` Delete a workout by id
-
-Posts Endpoint:
-- ```GET /posts``` Get all posts
-- ```GET /posts/{id}``` Get a post by id
-- ```GET /posts/user/{userId}``` Get all posts by User id
-- ```POST /posts``` Add a new post
-- ```PUT /posts/{id}``` Update a post by id
-- ```DELETE /posts/{id}``` Delete a post by id
-
-   Comment functionality:
-
-   - ```POST /posts/{id}/comment``` Add a new comment to an existing post with id
-   - ```DELETE /posts/{id}/comment/{commentId}``` Delete a comment with commentId from a post with id
-
-   Like functionality:
-
-   - ```PUT /posts/{id}/like``` Like a post by id
-   - ```PUT /posts/{id}/unlike``` Unlike a post by id
-
-Users Endpoint:
-
-User schema:
+**User:**
 ```
 {
    id: ID,
@@ -68,16 +32,103 @@ User schema:
 }
 ```
 
-LoginBody schema:
+**LoginBody:**
 ```
 {
    username: String,
    password: String
 }
 ```
+
+**Meal:**
+```
+{
+   id: String,
+   name: String,
+   calories: Int,
+   carbs: Int,
+   protein: Int,
+   fat: Int
+}
+```
+
+**Workout:**
+```
+{
+   id: String,
+   name: String,
+   reps: Int,
+   sets: Int,
+   weight: Int,
+   duration: Int
+}
+```
+
+**Post:**
+```
+{
+   id: String,
+   userId: String,
+   description: String,
+   // media: MultipartFile, (In progress)
+   likes: Int,
+   comments: List<Comment>
+   timestamp: Long
+}
+```
+
+**Comment:**
+```
+{
+    id: String,
+    userId: String,
+    likes: Int,
+    text: String,
+    timestamp: Long
+}
+```
+
+# API endpoints
+
+Here are the available API endpoints:
+
+**Users Endpoint:**
+
 - ```GET /users``` Get all users
 - ```GET /users/{id}``` Get a user by id
 - ```POST /users``` Create a new user 
 - ```POST /users/login``` Returns user if username/password combination found, null otherwise
 - ```PUT /users/{id}``` Update a user by id
 - ```DELETE /users/{id}``` Delete a user by id
+
+**Meals Endpoint:**
+- ```GET /meals``` Get all meals
+- ```GET /meals/{id}``` Get a meal by id
+- ```POST /meals``` Add a new meal
+- ```PUT /meals/{id}``` Update a meal by id
+- ```DELETE /meals/{id}``` Delete a meal by id
+
+**Workouts Endpoint:**
+- ```GET /workouts``` Get all workouts
+- ```GET /workouts/{id}``` Get a workout by id
+- ```POST /workouts``` Add a new workout
+- ```PUT /workouts/{id}``` Update a workout by id
+- ```DELETE /workouts/{id}``` Delete a workout by id
+
+**Posts Endpoint:**
+- ```GET /posts``` Get all posts
+- ```GET /posts/{id}``` Get a post by id
+- ```GET /posts/user/{userId}``` Get all posts by User id
+- ```POST /posts``` Add a new post
+- ```PUT /posts/{id}``` Update a post by id
+- ```DELETE /posts/{id}``` Delete a post by id
+
+   **Comment functionality:**
+
+   - ```POST /posts/{id}/comment``` Add a new comment to an existing post with id
+   - ```DELETE /posts/{id}/comment/{commentId}``` Delete a comment with commentId from a post with id
+
+   **Like functionality:**
+
+   - ```PUT /posts/{id}/like``` Like a post by id
+   - ```PUT /posts/{id}/unlike``` Unlike a post by id
