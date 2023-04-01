@@ -98,8 +98,8 @@ Here are the available API endpoints:
 - ```GET /users/{id}``` Get a user by id
 - ```POST /users``` Create a new user 
 - ```POST /users/login``` Returns user if username/password combination found, null otherwise
-- ```PUT /{followerId}/follow/{receiverId}``` Adds the receiverId to the User of the followerId's following array
-- ```PUT /{followerId}/unfollow/{receiverId}``` Removes the receiverId of the User of the followerId's following array
+- ```PUT /users/{followerId}/follow/{receiverId}``` Adds the receiverId to the User of the followerId's following array
+- ```PUT /users/{followerId}/unfollow/{receiverId}``` Removes the receiverId of the User of the followerId's following array
 - ```PUT /users/{id}``` Update a user by id
 - ```DELETE /users/{id}``` Delete a user by id
 
