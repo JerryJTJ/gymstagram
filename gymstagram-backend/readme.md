@@ -40,7 +40,15 @@ Posts Endpoint:
 - ```GET /posts/{id}``` Get a post by id
 - ```GET /posts/user/{userId}``` Get all posts by User id
 - ```POST /posts``` Add a new post
-- ```POST /posts/{id}/comment``` Add a new comment to an existing post with id
 - ```PUT /posts/{id}``` Update a post by id
 - ```DELETE /posts/{id}``` Delete a post by id
-- ```DELETE /posts/{id}/comment/{commentId}``` Delete a comment with commentId from a post with id
+
+   Comment functionality:
+
+   - ```POST /posts/{id}/comment``` Add a new comment to an existing post with id
+   - ```DELETE /posts/{id}/comment/{commentId}``` Delete a comment with commentId from a post with id
+
+   Like functionality:
+
+   - ```PUT /posts/{id}/like``` Like a post by id
+   - ```PUT /posts/{id}/unlike``` Unlike a post by id
