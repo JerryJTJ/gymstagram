@@ -97,7 +97,8 @@ public class UserService {
     // Follow and unfollow
     public User followUser(String followerUserId, String receiverUserId) {
         Optional<User> followerUser = userRepository.findById(followerUserId);
-        if (followerUser.isPresent()) {
+        Optional<User> receiverUser = userRepository.findById(receiverUserId);
+        if (followerUser.isPresent() && receiverUser.isPresent()) {
             User updatedFollowerUser = followerUser.get();
             List<String> following = updatedFollowerUser.getFollowing();
 
