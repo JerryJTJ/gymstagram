@@ -27,50 +27,99 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping List<Post> getAllPosts() {
+    /**
+     * Returns a list of all posts.
+     * @return List of all posts
+     */
+    @GetMapping("")
+    public List<Post> getAllPosts() {
         return postService.getAllPosts();
     }
 
+    /**
+     * Returns the post with the given ID.
+     * @param id The ID of the post to retrieve
+     * @return The post with the given ID
+     */
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable String id) {
         return postService.getPostById(id);
     }
 
+    /**
+     * Returns a list of all posts by the given user.
+     * @param userId The ID of the user whose posts to retrieve
+     * @return List of all posts by the given user
+     */
     @GetMapping("/user/{userId}")
     public List<Post> getAllPostsbyUserId(@PathVariable String userId) {
         return postService.getAllPostsbyUserId(userId);
     }
 
+    /**
+     * Creates a new post.
+     * @param post The post to create
+     * @return The created post
+     */
     @PostMapping("")
     public Post createPost(@RequestBody Post post) {
         return postService.createPost(post);
     }
 
+    /**
+     * Adds a comment to the post with the given ID.
+     * @param id The ID of the post to add the comment to
+     * @param comment The comment to add to the post
+     * @return The added comment
+     */
     @PostMapping("/{id}/comment")
     public Comment addCommentToPost(@PathVariable String id, @RequestBody Comment comment) {
         return postService.addCommentToPost(id, comment);
     }
 
+    /**
+     * Updates the post with the given ID.
+     * @param id The ID of the post to update
+     * @param post The updated post object
+     * @return The updated post object
+     */
     @PutMapping("/{id}")
     public Post updatePost(@PathVariable String id, @RequestBody Post post) {
         return postService.updatePost(id, post);
     }
 
+    /**
+     * Likes the post with the given ID.
+     * @param id The ID of the post to like
+     */
     @PutMapping("/{id}/like")
     public void likePost(@PathVariable String id) {
         postService.incrementPostLike(id);
     }
 
+    /**
+     * Unlikes the post with the given ID.
+     * @param id The ID of the post to unlike
+     */
     @PutMapping("/{id}/unlike")
     public void unlikePost(@PathVariable String id) {
         postService.decrementPostLike(id);
     }
 
+    /**
+     * Deletes the post with the given ID.
+     * @param id The ID of the post to delete
+     */
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable String id) {
         postService.deletePost(id);
     }
 
+    /**
+     * Deletes the comment with the given ID from the post with the given ID.
+     * @param id The ID of the post to delete the comment from
+     * @param commentId The ID of the comment to delete
+     */
     @DeleteMapping("/{id}/comment/{commentId}")
     public void deleteCommentFromPost(@PathVariable String id, @PathVariable String commentId) {
         postService.deleteCommentFromPost(id, commentId);
