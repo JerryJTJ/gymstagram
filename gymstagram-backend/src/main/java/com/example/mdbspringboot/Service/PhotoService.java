@@ -14,6 +14,7 @@ import com.example.mdbspringboot.model.Photo;
 import com.example.mdbspringboot.repository.PhotoRepository;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 @Service
 public class PhotoService {
@@ -40,6 +41,23 @@ public class PhotoService {
         headers.setContentType(MediaType.IMAGE_PNG);
     
         // Return the raw image data in the response body
-        return new ResponseEntity<>(photo.getImage().getData(), headers, HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(photo.getImage().getData(), headers, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            // Handle the exception
+            System.out.println("No value present in the optional");
+            return null;
+        }
+    }
+
+    public void deletePhotoById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+        try {
+            photoRepo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete post");
+        }
     }
 }

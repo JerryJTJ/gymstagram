@@ -5,6 +5,7 @@ This class represents the controller for Meal entity
 package com.example.mdbspringboot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,4 +38,9 @@ public class PhotoController {
     public ResponseEntity<Object> getPhoto(@PathVariable String id, Model model) {
     return photoService.getPhoto(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable String id) {
+        photoService.deletePhotoById(id);
+    } 
 }
