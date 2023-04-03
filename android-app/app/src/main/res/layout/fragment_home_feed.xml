@@ -15,13 +15,5 @@
 </ScrollView>
 
 
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:layout_margin="@dimen/text_margin"-->
-<!--            android:textSize="25dp"-->
-<!--            android:text="Home Feed"-->
-<!--            />-->
-
 
 

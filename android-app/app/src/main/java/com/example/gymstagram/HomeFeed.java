@@ -1,13 +1,10 @@
 package com.example.gymstagram;
 import java.util.List;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
 import androidx.core.content.ContextCompat;
 
-import com.example.gymstagram.CardForPost;
 public class HomeFeed extends Fragment {
 
     private FragmentHomeFeedBinding binding;
@@ -29,7 +25,6 @@ public class HomeFeed extends Fragment {
 
     public HomeFeed() {
         // Required empty public constructor
-
     }
 
     @Override
@@ -80,7 +75,6 @@ public class HomeFeed extends Fragment {
                 linearLayout.addView(cardView);
             }
         }
-
     }
 
     @Override

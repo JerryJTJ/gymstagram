@@ -4,16 +4,13 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.gymstagram.R;
 
 public class CardForPost extends LinearLayout {
-//    private LinearLayout postHeader;
     private ImageView profilePhoto;
     private TextView username;
     private TextView locationAndDate;
     private ImageView postImage;
     private TextView post_text;
-
 
     public CardForPost(Context context)
     {
@@ -34,8 +31,8 @@ public class CardForPost extends LinearLayout {
         post_text = (TextView)findViewById(R.id.post_text);
 
     }
-    public void updateCard(String usernamee, String locAndDate, String post_content){
-        username.setText(usernamee);
+    public void updateCard(String username_, String locAndDate, String post_content){
+        username.setText(username_);
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
     }
