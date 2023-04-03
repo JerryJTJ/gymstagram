@@ -6,8 +6,6 @@ Before you can start the backend, you'll need to have the following tools instal
 - [Java Development Kit (JDK) 17](https://www.oracle.com/ca-en/java/technologies/downloads/#java17)
 - [MongoDB](https://www.mongodb.com/try/download/community-kubernetes-operator)
 
-Very important Note: Ask Jason or Matt to add your Connection IP Address to our IP Access List in our MongoDB 
-
 # Getting Started
 
 1) Clone this repository to your local machine.
