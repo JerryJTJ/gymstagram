@@ -40,7 +40,7 @@ public class PostService {
         if (existingPost.isPresent()) {
             Post updatedPost = existingPost.get();
             updatedPost.setDescription(post.getDescription());
-            //updatedPost.setMediaUrl(post.getMediaUrl());
+            updatedPost.setMediaIds(post.getMediaIds());
             return postRepository.save(updatedPost);
         }
         return null;
