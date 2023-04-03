@@ -93,4 +93,42 @@ public class UserService {
             throw new RuntimeException("Failed to delete user", e);
         }
     }
+
+    // Follow and unfollow
+    public User followUser(String followerUserId, String receiverUserId) {
+        Optional<User> followerUser = userRepository.findById(followerUserId);
+        Optional<User> receiverUser = userRepository.findById(receiverUserId);
+        if (followerUser.isPresent() && receiverUser.isPresent()) {
+            User updatedFollowerUser = followerUser.get();
+            List<String> following = updatedFollowerUser.getFollowing();
+
+            if (following.contains(receiverUserId)) {
+                System.out.println("Already following");
+                return null;
+            }
+
+            following.add(receiverUserId);
+            updatedFollowerUser.setFollowing(following);
+            userRepository.save(updatedFollowerUser);
+            return updatedFollowerUser;
+        }
+        return null;
+    }
+
+    public User unfollowUser(String followerUserId, String receiverUserId) {
+        Optional<User> followerUser = userRepository.findById(followerUserId);
+        if (followerUser.isPresent()) {
+            User updatedFollowerUser = followerUser.get();
+            List<String> following = updatedFollowerUser.getFollowing();
+            for (int i = 0; i < following.size(); i++) {
+                if (following.get(i).equals(receiverUserId)) {
+                    following.remove(i);
+                    updatedFollowerUser.setFollowing(following);
+                    userRepository.save(updatedFollowerUser);
+                    return updatedFollowerUser;
+                }
+            }
+        }
+        return null;
+    }
 }

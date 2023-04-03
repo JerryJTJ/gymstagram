@@ -79,6 +79,16 @@ public class UserController {
         return null;
     }
 
+    @PutMapping("/{followerId}/follow/{receiverId}")
+    public User followUser(@PathVariable String followerId, @PathVariable String receiverId) {
+        return userService.followUser(followerId, receiverId);
+    }
+
+    @PutMapping("/{followerId}/unfollow/{receiverId}")
+    public User unfollowUser(@PathVariable String followerId, @PathVariable String receiverId) {
+        return userService.unfollowUser(followerId, receiverId);
+    }
+
     /**
      * This method updates an existing user by id
      * 
