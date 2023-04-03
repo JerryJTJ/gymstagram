@@ -1,9 +1,12 @@
 package com.example.gymstagram;
 import java.util.List;
+
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
@@ -15,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
 import androidx.core.content.ContextCompat;
+
+import com.example.gymstagram.CardForPost;
 public class HomeFeed extends Fragment {
 
     private FragmentHomeFeedBinding binding;
@@ -24,6 +29,7 @@ public class HomeFeed extends Fragment {
 
     public HomeFeed() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -39,31 +45,39 @@ public class HomeFeed extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
-        linearLayout = (LinearLayout)view.findViewById(R.id.linearlayout);
+        linearLayout = (LinearLayout)view.findViewById(R.id.homefeedlinearlayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(70,20,70,70);
         linearLayout.setVerticalScrollBarEnabled(true);
 
+        //adding default posts to show up on home feed, this should be replaced later
+        String username1 = "DefaultUser1";
+        String dateAndLocation1 = "04/02/2023 21:18:21, CIF, Waterloo";
+        String postContent1 = "Gym 41 is a group of independent personal fitness professionals providing you with the best results inside one gym. In addition to professional training, we give food! \n\nCome join us for an intro session this Friday...";
+        CardForPost cardView1 = new CardForPost(getContext());
+        cardView1.updateCard(username1,dateAndLocation1,postContent1);
+        cardView1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+        linearLayout.addView(cardView1);
+        String username2 = "DefaultUser2";
+        String dateAndLocation2 = "04/01/2023 21:18:21, CIF, Waterloo";
+        String postContent2 = "App restart successful without requiring a re-install";
+        CardForPost cardView2 = new CardForPost(getContext());
+        cardView2.updateCard(username2,dateAndLocation2,postContent2);
+        cardView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+        linearLayout.addView(cardView2);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
         List<Post> posts = viewModel.getPosts();
 
         if (posts != null){
             for (int i = 0; i < posts.size(); i++) {
-                TextView textView = new TextView(getContext());
-                textView.setText("@"+posts.get(i).getTitle() + "\n" + posts.get(i).getDescription());
-                textView.setMinHeight(400);
-                textView.setTextSize(20);
-                textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.back));
+                String username = posts.get(i).getTitle();
+                String dateAndLocation = posts.get(i).getDateCreated() + ", CIF, Waterloo";
+                String postContent = posts.get(i).getDescription();
+                CardForPost cardView = new CardForPost(getContext());
+                cardView.updateCard(username,dateAndLocation,postContent);
+                cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
-                textView.setPadding(20,20,20,60);
-                TextView dateAndLocationView = new TextView(getContext());
-                dateAndLocationView.setText(posts.get(i).getDateCreated() + " , CIF, Waterloo, ON");
-                dateAndLocationView.setTextSize(16);
-                dateAndLocationView.setY(-75);
-                dateAndLocationView.setX(20);
-
-                linearLayout.addView(textView);
-                linearLayout.addView(dateAndLocationView);
+                linearLayout.addView(cardView);
             }
         }
 
