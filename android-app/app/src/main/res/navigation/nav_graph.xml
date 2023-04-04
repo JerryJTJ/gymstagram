@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFeed"
             app:destination="@id/homeFeed" />
+        <action
+            android:id="@+id/action_loginFragment_to_register2"
+            app:destination="@id/register2" />
     </fragment>
     <fragment
         android:id="@+id/newWorkout"
@@ -85,5 +88,15 @@
             android:id="@+id/action_homeFeed_to_FirstFragment"
             app:destination="@id/addFragment"
             app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/register2"
+        android:name="com.example.gymstagram.register"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_register2_pop"
+            app:popUpTo="@id/register2"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
