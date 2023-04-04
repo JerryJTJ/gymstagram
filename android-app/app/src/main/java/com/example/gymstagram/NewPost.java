@@ -19,6 +19,9 @@ import com.example.gymstagram.databinding.FragmentNewPostBinding;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.retrofit.ApiClient;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class NewPost extends Fragment {
 
     private FragmentNewPostBinding binding;
@@ -83,7 +86,10 @@ public class NewPost extends Fragment {
                 String description = binding.description.getText().toString();
                 // userID won't be a text field later
                 String userID = binding.userID.getText().toString();
-                Post post = new Post(userID, description);
+                Date dNow = new Date();
+                SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
+                String id = ft.format(dNow);
+                Post post = new Post(id, userID, description);
                 Call<Post> newPost = ApiClient.getPostService().createPost(post);
                 newPost.enqueue(new Callback<Post>() {
                     @Override

@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 public class Post {
+    private String id;
     private String userId;
     private String description;
     private List<String> mediaIds;
@@ -20,7 +21,8 @@ public class Post {
         userId = "some title";
         description = "some description";
     }
-    public Post(String userId_, String description_){
+    public Post(String id_, String userId_, String description_){
+        id = id_;
         userId = userId_;
         description = description_;
         mediaIds = Collections.emptyList();
@@ -44,5 +46,8 @@ public class Post {
     }
     public int getLikes() {
         return likes;
+    }
+    public String getId() {
+        return id;
     }
 }

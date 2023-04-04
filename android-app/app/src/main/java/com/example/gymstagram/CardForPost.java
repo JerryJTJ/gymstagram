@@ -7,6 +7,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
+import java.util.concurrent.ThreadLocalRandom;
+
+import androidx.core.content.ContextCompat;
+
 public class CardForPost extends LinearLayout {
     private ImageView profilePhoto;
     private TextView username;
@@ -17,6 +22,8 @@ public class CardForPost extends LinearLayout {
     private ImageView likeButton;
 
     boolean toggleLike;
+    int numm;
+    String postID;
 
     public CardForPost(Context context)
     {
@@ -37,21 +44,34 @@ public class CardForPost extends LinearLayout {
         post_text = (TextView)findViewById(R.id.post_text);
         numLikes = (TextView)findViewById(R.id.num_likes);
         likeButton = (ImageView)findViewById(R.id.like);
+
+        toggleLike = true;
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("hhhh", "like pressed");
                 if (toggleLike){
-                    //call like API
+                    numm += 1;
+                    numLikes.setText(numm + " likes");
+                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+                    //TODO:call like API
                 }
+                else{
+                    numm -= 1;
+                    numLikes.setText(numm + " likes");
+                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+                }
+                toggleLike = !toggleLike;
             }
         });
     }
-    public void updateCard(String username_, String locAndDate, String post_content, String num_likes){
+    public void updateCard(String id,String username_, String locAndDate, String post_content, String num_likes){
         username.setText(username_);
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
-        numLikes.setText(num_likes);
-        // theres a setVisibility(GONE) if we don't want to show "0 liked"
+        numm = ThreadLocalRandom.current().nextInt(0, 10 + 1);
+        numLikes.setText(numm + " likes");
+//        theres a setVisibility(GONE) if we don't want to show "0 liked"
+
+        postID = id;
     }
 }

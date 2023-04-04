@@ -74,7 +74,7 @@
             android:id="@+id/like"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:background="@drawable/heart"></ImageView>
+            android:background="@drawable/heart_empty"></ImageView>
 
         <ImageView
             android:id="@+id/comment"

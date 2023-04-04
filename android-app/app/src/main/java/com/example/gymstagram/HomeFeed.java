@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,12 +66,12 @@ public class HomeFeed extends Fragment {
                             String userID = "DefaultUsername";
                             //TODO:get username using userID
                             //String userID = posts.get(i).getUserId();
-
+                            String id = posts.get(i).getId();
                             String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                             String postContent = posts.get(i).getDescription();
                             String numLikesToDisplay = posts.get(i).getLikes() + " likes";
                             CardForPost cardView = new CardForPost(getContext());
-                            cardView.updateCard(userID,dateAndLocation,postContent, numLikesToDisplay);
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                             linearLayout.addView(cardView);
