@@ -50,26 +50,7 @@ public class NewPost extends Fragment {
             }
         });
 
-        binding.buttonAddLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Handler here
-            }
-        });
 
-        binding.buttonLinkToWorkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Handler here
-            }
-        });
-
-        binding.buttonShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Handler here
-            }
-        });
 
         binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,8 +65,8 @@ public class NewPost extends Fragment {
             public void onClick(View view) {
                 //Handler here
                 String description = binding.description.getText().toString();
-                // userID won't be a text field later
-                String userID = binding.userID.getText().toString();
+                // TODO:get actual username
+                String userID = "someUser1";
                 Date dNow = new Date();
                 SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
                 String id = ft.format(dNow);

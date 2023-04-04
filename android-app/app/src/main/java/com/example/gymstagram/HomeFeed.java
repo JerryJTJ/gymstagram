@@ -1,6 +1,7 @@
 package com.example.gymstagram;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public class HomeFeed extends Fragment {
             public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                 if(response.isSuccessful()){
                     List<Post> posts = response.body();
+                    //show recent posts first
+                    Collections.reverse(posts);
                     if (posts != null){
                         for (int i = 0; i < posts.size(); i++) {
                             String userID = "DefaultUsername";

@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/profile_photo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@mipmap/profile_pic_man"></ImageView>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:text="Username"
-                android:textSize="20dp"></TextView>
+                android:textSize="17dp"></TextView>
 
             <TextView
                 android:id="@+id/locationAndDate"
@@ -38,8 +38,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:text="CIF, Waterloo, ON  - 3 hours ago"
-                android:textSize="15dp"></TextView>
+                android:textSize="13dp"></TextView>
         </LinearLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
