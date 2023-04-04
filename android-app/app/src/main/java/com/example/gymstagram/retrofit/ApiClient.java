@@ -30,4 +30,9 @@ public class ApiClient {
         WorkoutAPI workoutAPI = getRetrofit().create(WorkoutAPI.class);
         return workoutAPI;
     }
+
+    public static PostAPI getPostService(){
+        PostAPI postAPI = getRetrofit().create(PostAPI.class);
+        return postAPI;
+    }
 }

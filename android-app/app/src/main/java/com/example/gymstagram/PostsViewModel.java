@@ -1,5 +1,6 @@
 package com.example.gymstagram;
 
+import com.example.gymstagram.model.Post;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 

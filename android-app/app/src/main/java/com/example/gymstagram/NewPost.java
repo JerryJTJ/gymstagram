@@ -6,13 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gymstagram.databinding.FragmentNewPostBinding;
-import android.widget.EditText;
+import com.example.gymstagram.model.Post;
+import com.example.gymstagram.retrofit.ApiClient;
+
 public class NewPost extends Fragment {
 
     private FragmentNewPostBinding binding;
@@ -75,9 +81,24 @@ public class NewPost extends Fragment {
             public void onClick(View view) {
                 //Handler here
                 String description = binding.description.getText().toString();
-                String title = binding.title.getText().toString();
-                Post newPost = new Post(title, description);
-                viewModel.addPost(newPost);
+                // userID won't be a text field later
+                String userID = binding.userID.getText().toString();
+                Post post = new Post(userID, description);
+                Call<Post> newPost = ApiClient.getPostService().createPost(post);
+                newPost.enqueue(new Callback<Post>() {
+                    @Override
+                    public void onResponse(Call<Post> call, Response<Post> response) {
+                        if(response.isSuccessful()){
+                            Log.i("Add Post", "Created post successfully");
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Post> call, Throwable t) {
+                        Log.e("Add Post", "onFailure: Could not add post");
+                    }
+                });
+
+//                viewModel.addPost(newPost);
             }
         });
     }

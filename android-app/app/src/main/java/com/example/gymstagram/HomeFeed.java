@@ -1,4 +1,7 @@
 package com.example.gymstagram;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.os.Bundle;
@@ -9,12 +12,16 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
+import com.example.gymstagram.model.Post;
+import com.example.gymstagram.retrofit.ApiClient;
+
 import androidx.core.content.ContextCompat;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFeed extends Fragment {
 
@@ -44,39 +51,46 @@ public class HomeFeed extends Fragment {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setVerticalScrollBarEnabled(true);
 
-        //adding default posts to show up on home feed, this should be replaced later
-        String username1 = "DefaultUser1";
-        String dateAndLocation1 = "04/02/2023 21:18:21, CIF, Waterloo";
-        String postContent1 = "Gym 41 is a group of independent personal fitness professionals providing you with the best results inside one gym. In addition to professional training, we give food! \n\nCome join us for an intro session this Friday...";
-        CardForPost cardView1 = new CardForPost(getContext());
-        cardView1.updateCard(username1,dateAndLocation1,postContent1);
-        cardView1.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
-        linearLayout.addView(cardView1);
-        String username2 = "DefaultUser2";
-        String dateAndLocation2 = "04/01/2023 21:18:21, CIF, Waterloo";
-        String postContent2 = "App restart successful without requiring a re-install";
-        CardForPost cardView2 = new CardForPost(getContext());
-        cardView2.updateCard(username2,dateAndLocation2,postContent2);
-        cardView2.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
-        linearLayout.addView(cardView2);
-
         viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
-        List<Post> posts = viewModel.getPosts();
 
-        if (posts != null){
-            for (int i = 0; i < posts.size(); i++) {
-                String username = posts.get(i).getTitle();
-                String dateAndLocation = posts.get(i).getDateCreated() + ", CIF, Waterloo";
-                String postContent = posts.get(i).getDescription();
-                CardForPost cardView = new CardForPost(getContext());
-                cardView.updateCard(username,dateAndLocation,postContent);
-                cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+        // just displaying all posts for now
+        Call<List<Post>> allPostsResponse = ApiClient.getPostService().getAllPosts();
+        allPostsResponse.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()){
+                    List<Post> posts = response.body();
+                    if (posts != null){
+                        for (int i = 0; i < posts.size(); i++) {
+                            String userID = "DefaultUsername";
+                            //TODO:get username using userID
+                            //String userID = posts.get(i).getUserId();
 
-                linearLayout.addView(cardView);
+                            String dateAndLocation = convertTime(posts.get(i).getTimestamp());
+                            String postContent = posts.get(i).getDescription();
+                            String numLikesToDisplay = posts.get(i).getLikes() + " likes";
+                            CardForPost cardView = new CardForPost(getContext());
+                            cardView.updateCard(userID,dateAndLocation,postContent, numLikesToDisplay);
+                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+
+                            linearLayout.addView(cardView);
+                        }
+                    }
+                }
             }
-        }
-    }
 
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+
+            }
+        });
+
+    }
+    public String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
+        return format.format(date);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
