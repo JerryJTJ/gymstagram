@@ -4,23 +4,7 @@ This class represents the Model for Meal entity
 */
 package com.example.mdbspringboot.model;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-
-@Document("Meal")
-public class Meal {
-
-	@Id
-	private String id;
-
-	private Date creationDate;
+public class CreateMealBody {
 
 	private String name;
 	private int calories;
@@ -28,30 +12,13 @@ public class Meal {
 	private int protein;
 	private int fat;
 	
-	public Meal(String name, int calories, int carbs, int protein, int fat) {
+	public CreateMealBody(String name, int calories, int carbs, int protein, int fat) {
 		super();
-		Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-		Date currentDate = calendar.getTime();
-
-        this.id = UUID.randomUUID().toString();
-		this.creationDate = currentDate;
 		this.name = name;
 		this.calories = calories;
 		this.carbs = carbs;
 		this.protein = protein;
 		this.fat = fat;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Date getCreationDate() {
-		return creationDate;
 	}
 
 	public String getName() {
