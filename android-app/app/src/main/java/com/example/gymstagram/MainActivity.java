@@ -57,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController navController,
                                              @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
                 if (navDestination.getId() == R.id.loginFragment) {
+                    Log.d("CHECKING", "WE IN");
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
+                    Log.d("CHECKING", "NO GOOD");
                     bottomNavigationView.setVisibility(View.VISIBLE);
                 }
             }
