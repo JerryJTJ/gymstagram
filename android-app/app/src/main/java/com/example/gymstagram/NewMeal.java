@@ -74,6 +74,7 @@ public class NewMeal extends Fragment {
                     @Override
                     public void onResponse(Call<Meal> call, Response<Meal> response) {
                         //Success, go back to add
+                        Toast.makeText(getActivity(), "Added meal", Toast.LENGTH_SHORT).show();
                         NavHostFragment.findNavController(NewMeal.this).popBackStack(R.id.addFragment, false);
                     }
 
