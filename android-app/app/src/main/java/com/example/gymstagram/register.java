@@ -58,35 +58,13 @@ public class register extends Fragment {
     private FragmentRegisterBinding binding;
     Button done, reg;
     private EditText un, pw, em, cw, tw;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public register() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment register.
-     */
-    // TODO: Rename and change types and number of parameters
     public static register newInstance(String param1, String param2) {
         register fragment = new register();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,14 +72,6 @@ public class register extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
     }
 
     @Override
@@ -123,7 +93,6 @@ public class register extends Fragment {
         });
 
         return view;
-//        return inflater.inflate(R.layout.fragment_register, container, false);
     }
     private void registerUser() {
         final String username = un.getText().toString().trim();
@@ -170,6 +139,8 @@ public class register extends Fragment {
                             @Override
                             public void run() {
                                 Toast.makeText(getActivity(), "Registration successful", Toast.LENGTH_SHORT).show();
+
+                                NavHostFragment.findNavController(register.this).popBackStack(R.id.loginFragment, false);
                             }
                         });
 
@@ -194,21 +165,5 @@ public class register extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-
-//        username = view.findViewById(R.id.usernameregister);
-//        password = view.findViewById(R.id.passwordregister);
-
-        done = view.findViewById(R.id.registerdone);
-//        final Button registerbutton = binding.registerdone;
-
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(register.this)
-                        .navigate(R.id.action_register2_pop);
-            }
-        });
     }
 }
