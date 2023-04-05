@@ -25,7 +25,10 @@ import android.view.ViewGroup;
 
 import com.example.gymstagram.databinding.FragmentNewPostBinding;
 import com.example.gymstagram.model.Post;
+import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.ApiClient;
+import com.example.gymstagram.retrofit.RetrofitService;
+import com.example.gymstagram.retrofit.UserAPI;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -37,6 +40,7 @@ public class NewPost extends Fragment {
     private PostsViewModel viewModel;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
     private String photoID;
+    private String userName;
 
         @Override
     public View onCreateView(
@@ -79,6 +83,23 @@ public class NewPost extends Fragment {
                         Log.d("PhotoPicker", "No media selected");
                     }
                 });
+            String userID = MainActivity.userId;
+            RetrofitService retrofitService = new RetrofitService();
+            UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+            Call<User> currUser = userAPI.getUserById(userID);
+            currUser.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    if(response.isSuccessful()){
+                        userName = response.body().getUsername();
+                        binding.username.setText(userName);
+                    }
+                }
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Log.e("hhhh", "could not get username");
+                }
+            });
         return binding.getRoot();
     }
 
@@ -115,11 +136,12 @@ public class NewPost extends Fragment {
                 //Handler here
                 String description = binding.description.getText().toString();
                 // TODO:get actual username
-                String userID = "someUser1";
+
+
                 Date dNow = new Date();
                 SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
                 String id = ft.format(dNow);
-                Post post = new Post(id, userID, description);
+                Post post = new Post(id, userName, description);
                 Call<Post> newPost = ApiClient.getPostService().createPost(post);
                 newPost.enqueue(new Callback<Post>() {
                     @Override

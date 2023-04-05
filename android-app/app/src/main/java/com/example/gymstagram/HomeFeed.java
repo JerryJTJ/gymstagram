@@ -94,9 +94,7 @@ public class HomeFeed extends Fragment {
                     Collections.reverse(posts);
                     if (posts != null){
                         for (int i = 0; i < posts.size(); i++) {
-                            String userID = "DefaultUsername";
-                            //TODO:get username using userID
-                            //String userID = posts.get(i).getUserId();
+                            String userID = posts.get(i).getUserId();
                             String id = posts.get(i).getId();
                             String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                             String postContent = posts.get(i).getDescription();
