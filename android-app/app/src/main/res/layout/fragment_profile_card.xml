@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_card_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_marginTop="40dp"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <LinearLayout
+        android:id="@+id/profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:context=".ProfileCard">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:text="Username"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_follow"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:text="+"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/profile_card"
+        android:background="#CCCCCC"
+        android:layout_marginTop="20dp"
+        />
+
+</RelativeLayout>

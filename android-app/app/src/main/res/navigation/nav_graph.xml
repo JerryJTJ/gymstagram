@@ -88,6 +88,15 @@
             android:id="@+id/action_homeFeed_to_FirstFragment"
             app:destination="@id/addFragment"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_homeFeed_to_historyPage"
+            app:destination="@id/historyPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/followPage"
+        android:name="com.example.gymstagram.FollowPage"
+        android:label="fragment_follow_page"
+        tools:layout="@layout/fragment_follow_page" >
     </fragment>
     <fragment
         android:id="@+id/register2"
@@ -99,4 +108,14 @@
             app:popUpTo="@id/register2"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/profileCard"
+        android:name="com.example.gymstagram.ProfileCard"
+        android:label="fragment_profile_card"
+        tools:layout="@layout/fragment_profile_card" />
+    <fragment
+        android:id="@+id/historyPage"
+        android:name="com.example.gymstagram.HistoryPage"
+        android:label="fragment_history_page"
+        tools:layout="@layout/fragment_history_page" />
 </navigation>

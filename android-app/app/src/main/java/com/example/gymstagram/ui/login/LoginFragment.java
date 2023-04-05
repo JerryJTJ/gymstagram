@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gymstagram.FirstFragment;
+import com.example.gymstagram.MainActivity;
 import com.example.gymstagram.databinding.FragmentLoginBinding;
 
 import com.example.gymstagram.R;
@@ -174,6 +175,7 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void run() {
                                     Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
+                                    MainActivity.userId = id;
                                 }
                             });
 

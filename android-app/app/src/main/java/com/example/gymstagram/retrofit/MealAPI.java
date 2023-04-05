@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface MealAPI {
-    @GET("/meals/")
+    @GET("/meals")
     Call<List<Meal>> getAllMeals();
 
     @POST("/meals")
