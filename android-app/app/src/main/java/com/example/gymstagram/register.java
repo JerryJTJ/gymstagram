@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -144,6 +146,9 @@ public class register extends Fragment {
                     jsonParam.put("username", username);
                     jsonParam.put("password", password);
                     jsonParam.put("email", email);
+                    jsonParam.put("following", new JSONArray());
+                    jsonParam.put("currentWeight", 0);
+                    jsonParam.put("targetWeight", 0);
 
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     os.writeBytes(jsonParam.toString());

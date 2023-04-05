@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
 //      Bottom Navigation Bar
         bottomNavigationView = findViewById(R.id.bottom_nav_menu);
 
-        // Hide the BottomNavigationView on the LoginFragment
+        // Hide the BottomNavigationView on login and register
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController navController,
                                              @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if (navDestination.getId() == R.id.loginFragment) {
+                if (navDestination.getId() == R.id.loginFragment || navDestination.getId() == R.id.register) {
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
                     bottomNavigationView.setVisibility(View.VISIBLE);

@@ -49,10 +49,6 @@ public class FollowPage extends Fragment {
 
         binding = FragmentFollowPageBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
-        //get list of all users
-
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
