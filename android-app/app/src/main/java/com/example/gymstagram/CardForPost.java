@@ -9,9 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.example.gymstagram.model.User;
+import com.example.gymstagram.retrofit.RetrofitService;
+import com.example.gymstagram.retrofit.UserAPI;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.core.content.ContextCompat;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CardForPost extends LinearLayout {
     private ImageView profilePhoto;
@@ -65,8 +72,23 @@ public class CardForPost extends LinearLayout {
             }
         });
     }
-    public void updateCard(String id,String username_, String locAndDate, String post_content, String num_likes){
-        username.setText(username_);
+    public void updateCard(String id,String userID_, String locAndDate, String post_content, String num_likes){
+        RetrofitService retrofitService = new RetrofitService();
+        UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        Call<User> postUser = userAPI.getUserById(userID_);
+        postUser.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()){
+                    username.setText(response.body().getUsername());
+                }
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                username.setText("default ;(");
+            }
+        });
+
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
         numm = ThreadLocalRandom.current().nextInt(0, 10 + 1);
