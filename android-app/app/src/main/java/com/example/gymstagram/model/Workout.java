@@ -1,11 +1,14 @@
 package com.example.gymstagram.model;
 
+import java.util.Date;
+
 public class Workout {
     private String name;
     private int reps;
     private int sets;
     private int weight;
     private int duration;
+    private Date creationDate;
 
     public String getName() {
         return name;
@@ -47,4 +50,13 @@ public class Workout {
         this.duration = duration;
     }
 
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+
+        public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 }

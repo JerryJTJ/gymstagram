@@ -15,12 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.gymstagram.databinding.FragmentHistoryPageBinding;
 import com.example.gymstagram.model.Workout;
 import com.example.gymstagram.retrofit.ApiClient;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class HistoryPage extends Fragment {
@@ -61,21 +64,32 @@ public class HistoryPage extends Fragment {
                 if (response.isSuccessful()) {
                     List<Workout> workouts = response.body();
                     Collections.reverse(workouts);
+
                     if (workouts != null) {
+                        String prevDate = "";
                         for (int i = 0; i< workouts.size(); i++){
                             String workoutName = workouts.get(i).getName();
                             int numReps = workouts.get(i).getReps();
                             int numSets = workouts.get(i).getSets();
                             int weight = workouts.get(i).getWeight();
-                            int totalVol = numReps*numSets*weight;
+                            Log.i("hhhh", "onResponse: " + workouts.get(i));
+                            Date datecr = workouts.get(i).getCreationDate();
+                            SimpleDateFormat ft = new SimpleDateFormat("MM/dd/yyyy");
+                            String dateStr = ft.format(datecr);
+                            Log.i("hhhh", "dateStr: " + dateStr);
+                            Log.i("hhhh", "prevDate: " + prevDate);
+
+                            if (!dateStr.equals(prevDate)){
+                                TextView dateText = new TextView(getContext());
+                                dateText.setText(dateStr);
+                                dateText.setPadding(120,0,0,0);
+                                linearLayout.addView(dateText);
+                            }
+                            prevDate = dateStr;
+
 
                             CardForWorkoutHistory cardView = new CardForWorkoutHistory(getContext());
-                            cardView.updateCard(workoutName, totalVol);
-//                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
-                            if(i == 0){
-                                cardView.setTop(20);
-
-                            }
+                            cardView.updateCard(workoutName, weight, numReps, numSets, dateStr);
                             linearLayout.addView(cardView);
 
                         }
