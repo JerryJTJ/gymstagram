@@ -27,11 +27,26 @@
             android:textSize="18dp" />
 
         <Button
+            android:id="@+id/button_report"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:drawableLeft="@drawable/baseline_report_24"
+            android:paddingLeft="12dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:backgroundTint="#CCCCCC"
+            />
+
+
+
+        <Button
             android:id="@+id/button_follow"
             android:layout_width="50sp"
             android:layout_height="50sp"
             android:text="+"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+        />
 
     </LinearLayout>
 

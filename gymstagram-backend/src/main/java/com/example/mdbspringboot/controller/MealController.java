@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mdbspringboot.Service.MealService;
 import com.example.mdbspringboot.model.Meal;
+import com.example.mdbspringboot.model.CreateMealBody;
 
 @RestController
 @RequestMapping("/meals")
@@ -53,7 +54,8 @@ public class MealController {
      * @return Meal created meal object
      */
     @PostMapping("")
-    public Meal createMeal(@RequestBody Meal meal) {
+    public Meal createMeal(@RequestBody CreateMealBody createMealBody) {
+        Meal meal = new Meal(createMealBody.getName(), createMealBody.getCalories(), createMealBody.getCarbs(), createMealBody.getProtein(), createMealBody.getFat());
         return mealService.createMeal(meal);
     }
 

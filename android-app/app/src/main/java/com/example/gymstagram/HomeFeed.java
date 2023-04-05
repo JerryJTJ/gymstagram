@@ -1,7 +1,6 @@
 package com.example.gymstagram;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
 import com.example.gymstagram.model.Post;
+import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.ApiClient;
+import com.example.gymstagram.retrofit.RetrofitService;
+import com.example.gymstagram.retrofit.UserAPI;
 
 import androidx.core.content.ContextCompat;
 import retrofit2.Call;
@@ -34,6 +37,7 @@ public class HomeFeed extends Fragment {
     private PostsViewModel viewModel;
     private View view;
     LinearLayout linearLayout;
+    List<String> following;
     private int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
     public boolean checkPermissionForReadExtertalStorage() {
@@ -82,36 +86,52 @@ public class HomeFeed extends Fragment {
         linearLayout.setVerticalScrollBarEnabled(true);
 
         viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
-
-        // just displaying all posts for now
-        Call<List<Post>> allPostsResponse = ApiClient.getPostService().getAllPosts();
-        allPostsResponse.enqueue(new Callback<List<Post>>() {
+        String userID = MainActivity.userId;
+        RetrofitService retrofitService = new RetrofitService();
+        UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        Call<User> currUser = userAPI.getUserById(userID);
+        currUser.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    List<Post> posts = response.body();
-                    //show recent posts first
-                    Collections.reverse(posts);
-                    if (posts != null){
-                        for (int i = 0; i < posts.size(); i++) {
-                            String userID = posts.get(i).getUserId();
-                            String id = posts.get(i).getId();
-                            String dateAndLocation = convertTime(posts.get(i).getTimestamp());
-                            String postContent = posts.get(i).getDescription();
-                            String numLikesToDisplay = posts.get(i).getLikes() + " likes";
-                            CardForPost cardView = new CardForPost(getContext());
-                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
-                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+                    following = response.body().getFollowing();
+                    Log.i("hhhh", "onResponse: following: " + following);
+                    if (following!= null){
+                        for (int i = 0; i<following.size(); i++){
+                            String followedUserID = following.get(i);
+                            Log.i("hhhh", "onViewCreated: " + followedUserID);
+                            Call<List<Post>> allPostsByUser = ApiClient.getPostService().getAllPostsByUserId(followedUserID);
+                            allPostsByUser.enqueue(new Callback<List<Post>>() {
+                                @Override
+                                public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                                    List<Post> postsByUser = response.body();
+                                    Log.i("hhhh", "onResponse: postsByUser: " + postsByUser);
+                                    for (int i = 0; i < postsByUser.size(); i++) {
+                                        String userIDD = postsByUser.get(i).getUserId();
+                                        String id = postsByUser.get(i).getId();
+                                        String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
+                                        String postContent = postsByUser.get(i).getDescription();
+                                        String numLikesToDisplay = postsByUser.get(i).getLikes() + " likes";
+                                        CardForPost cardView = new CardForPost(getContext());
+                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay);
+                                        cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
-                            linearLayout.addView(cardView);
+                                        linearLayout.addView(cardView);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<Post>> call, Throwable t) {
+                                    Log.e("hhhh", "could not get posts by userid");
+                                }
+                            });
                         }
                     }
                 }
             }
-
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
-
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("hhhh", "could not get user by userid");
             }
         });
 

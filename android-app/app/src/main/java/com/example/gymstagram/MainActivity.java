@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.followPage:
                             bottomNavigationView.setSelectedItemId(R.id.nav_menu_users);
                             break;
+                        case R.id.explorePage:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_menu_explore);
+                            break;
                     }
                 }
             }
@@ -115,7 +118,16 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             //If home doesn't, create it (should never be the case)
-                            navController.navigate(R.id.homeFeed);
+                             if(navController.getCurrentDestination().getId() != R.id.homeFeed){
+                                 navController.navigate(R.id.homeFeed);
+                             }
+                            return true;
+
+                        case R.id.nav_menu_explore:
+                            if(navController.getCurrentDestination().getId() != R.id.explorePage){
+                                //Scroll to top or some other functionality
+                                navController.navigate(R.id.explorePage);
+                            }
                             return true;
 
                         case R.id.nav_menu_history:

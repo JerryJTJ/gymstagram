@@ -159,8 +159,7 @@ public class register extends Fragment {
                     br.close();
 
                     JSONObject response = new JSONObject(sb.toString());
-                    int status = response.getInt("status");
-                    if (status == 1) {
+
                         //Registration successful
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
@@ -168,7 +167,8 @@ public class register extends Fragment {
                                 Toast.makeText(getActivity(), "Registration successful", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    } else {
+
+                    if (response.isNull("1")){
                         //Registration failed
                         final String errorMessage = response.getString("message");
                         getActivity().runOnUiThread(new Runnable() {
