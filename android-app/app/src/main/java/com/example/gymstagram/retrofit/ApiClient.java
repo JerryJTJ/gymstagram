@@ -40,4 +40,8 @@ public class ApiClient {
         UserAPI userAPI = getRetrofit().create(UserAPI.class);
         return userAPI;
     }
+    public static MealAPI getMealService(){
+        MealAPI mealAPI = getRetrofit().create(MealAPI.class);
+        return mealAPI;
+    }
 }
