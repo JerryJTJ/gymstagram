@@ -7,7 +7,6 @@ package com.example.mdbspringboot.model;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.example.mdbspringboot.model.Comment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +17,7 @@ public class Post {
     private String id;
     private String userId;
     private String description;
-    // private String mediaUrl;
+    private List<String> mediaIds;
     private int likes;
     private List<Comment> comments;
     private long timestamp;
@@ -29,6 +28,7 @@ public class Post {
         this.userId = userId;
         this.description = description;
         this.likes = 0;
+        this.mediaIds = new ArrayList<>();
         this.comments = new ArrayList<>();
         this.timestamp = System.currentTimeMillis();
     }
@@ -45,9 +45,9 @@ public class Post {
         return description;
     }
 
-    // public String getMediaUrl() {
-    //     return mediaUrl;
-    // }
+    public List<String> getMediaIds() {
+        return mediaIds;
+    }
 
     public int getLikes() {
         return likes;
@@ -73,9 +73,9 @@ public class Post {
         this.description = description;
     }
 
-    // public void setMediaUrl(String mediaUrl) {
-    //     this.mediaUrl = mediaUrl;
-    // }
+    public void setMediaIds(List<String> mediaIds) {
+        this.mediaIds = mediaIds;
+    }
 
     public void setLikes(int likes) {
         this.likes = likes;

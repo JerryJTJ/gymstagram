@@ -6,8 +6,6 @@ Before you can start the backend, you'll need to have the following tools instal
 - [Java Development Kit (JDK) 17](https://www.oracle.com/ca-en/java/technologies/downloads/#java17)
 - [MongoDB](https://www.mongodb.com/try/download/community-kubernetes-operator)
 
-Very important Note: Ask Jason or Matt to add your Connection IP Address to our IP Access List in our MongoDB 
-
 # Getting Started
 
 1) Clone this repository to your local machine.
@@ -70,7 +68,7 @@ Very important Note: Ask Jason or Matt to add your Connection IP Address to our 
    id: String,
    userId: String,
    description: String,
-   // media: MultipartFile, (In progress)
+   mediaIds: List<String>,
    likes: Int,
    comments: List<Comment>
    timestamp: Long
@@ -88,6 +86,13 @@ Very important Note: Ask Jason or Matt to add your Connection IP Address to our 
 }
 ```
 
+**Photo:**
+```
+{
+    id: String,
+    image, Binary
+}
+```
 # API endpoints
 
 Here are the available API endpoints:
@@ -134,3 +139,8 @@ Here are the available API endpoints:
 
    - ```PUT /posts/{id}/like``` Like a post by id
    - ```PUT /posts/{id}/unlike``` Unlike a post by id
+   
+**Photo Endpoint:**
+- ```GET /photo/{id}``` Get a photo by id, returns a ```ResponseEntity<Object>```
+- ```POST /photo``` Add a new photo, returns a string ```photoId``` 
+- ```DELETE /photo/{id}``` Delete a photo by id

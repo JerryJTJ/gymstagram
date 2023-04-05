@@ -7,7 +7,23 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
+import android.util.Log;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,7 +46,14 @@ import com.example.gymstagram.R;
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
+
+    private EditText un, pw, em, cw, tw;
+    Button login, reg;
     private FragmentLoginBinding binding;
+
+    private EditText etUsername, etPassword;
+    private Button btnLogin;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -39,8 +62,133 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        return binding.getRoot();
 
+//        return binding.getRoot();
+
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+
+        un = view.findViewById(R.id.username);
+        pw = view.findViewById(R.id.password);
+
+        login = view.findViewById(R.id.login);
+        reg = view.findViewById(R.id.register);
+        login.setEnabled(true);
+        reg.setEnabled(true);
+        sharedPreferences = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        if (sharedPreferences.contains("user_id")){
+            Log.d("CLEANING","CLEANING");
+            sharedPreferences.edit().putString("user_id", "-").apply();
+
+        }
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser();
+                try {
+                    Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
+                    Thread.sleep(1000); // Sleep for 1000 milliseconds (1 second)
+                } catch (InterruptedException e) {
+                    // Handle the exception
+                }
+                Log.d("ACCESSing this", sharedPreferences.getString("user_id", "-"));
+                if (!sharedPreferences.getString("user_id", "-").equals("-")){
+                    Log.d("CURRENT", "GOING AWAY");
+                    NavHostFragment.findNavController(LoginFragment.this)
+                            .navigate(R.id.action_loginFragment_to_homeFeed);
+                }
+
+
+            }
+        });
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_register2);
+            }
+        });
+
+
+
+        return view;
+
+    }
+
+    private void loginUser() {
+        Log.d("MyApp", "STARTING LOGIN");
+        final String username = un.getText().toString().trim();
+        final String password = pw.getText().toString().trim();
+        Log.d("MyApp", username);
+        Log.d("MyApp", password);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://10.0.2.2:8080/users/login"); //replace with your API endpoint
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept","application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+
+                    JSONObject jsonParam = new JSONObject();
+                    jsonParam.put("username", username);
+                    jsonParam.put("password", password);
+
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    os.writeBytes(jsonParam.toString());
+                    os.flush();
+                    os.close();
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    if (sb.toString() == "") {
+                        Log.d("MyApp", "FAILEDDDDDD");
+                        //Login failed
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    } else {
+
+                        JSONObject response = new JSONObject(sb.toString());
+                        if (response.has("id")) {
+                            Log.d("SUCCESS", "SUCCESS");
+
+                            //Login successful
+                            final String id = response.getString("id");
+                            sharedPreferences.edit().putString("user_id", id).apply();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -52,14 +200,16 @@ public class LoginFragment extends Fragment {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final Button registerButton = binding.register;
         final ProgressBar loadingProgressBar = binding.loading;
-
+        registerButton.setEnabled(true);
         loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
                     return;
                 }
+
                 loginButton.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
                     usernameEditText.setError(getString(loginFormState.getUsernameError()));
@@ -117,18 +267,25 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_loginFragment_to_homeFeed);
-
-//                Implement Login Feature:
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-            }
-        });
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavHostFragment.findNavController(LoginFragment.this)
+//                        .navigate(R.id.action_loginFragment_to_homeFeed);
+//
+////                Implement Login Feature:
+////                loadingProgressBar.setVisibility(View.VISIBLE);
+////                loginViewModel.login(usernameEditText.getText().toString(),
+////                        passwordEditText.getText().toString());
+//            }
+//        });
+//        registerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavHostFragment.findNavController(LoginFragment.this)
+//                        .navigate(R.id.action_loginFragment_to_register2);
+//            }
+//        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

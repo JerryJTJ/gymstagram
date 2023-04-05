@@ -3,44 +3,25 @@ package com.example.mdbspringboot.model;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document("User")
-public class User {
-    @Id
-    private String id;
-    
+public class CreateUserBody {    
     private String username;
 
     private String email;
     
     private String password;
     
-    private List<String> following;
-
     private Float currentWeight;
 
     private Float targetWeight;
 
-    public User(String username, String email, String password, List<String> following, Float currentWeight, Float targetWeight) {
+    public CreateUserBody(String username, String email, String password, Float currentWeight, Float targetWeight) {
 		super();
-        this.id = UUID.randomUUID().toString();
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.following = following;
 		this.currentWeight = currentWeight;
         this.targetWeight = targetWeight;
 	}
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
     
     public String getUsername() {
         return username;
@@ -64,14 +45,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<String> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(List<String> following) {
-        this.following = following;
     }
 
     public Float getCurrentWeight() {

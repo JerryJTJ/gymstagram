@@ -3,8 +3,7 @@
 This class represents the controller for User entity
 */
 package com.example.mdbspringboot.controller;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.mdbspringboot.service.UserService;
+import com.example.mdbspringboot.model.CreateUserBody;
+
 import com.example.mdbspringboot.model.User;
 
 import com.example.mdbspringboot.model.LoginBody;
@@ -59,8 +60,9 @@ public class UserController {
      * @return User created user object
      */
     @PostMapping("")
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public User createUser(@RequestBody CreateUserBody createUserBody) {
+        User newUser = new User(createUserBody.getUsername(), createUserBody.getEmail(), createUserBody.getPassword(), Collections.<String>emptyList(), createUserBody.getCurrentWeight(), createUserBody.getTargetWeight());
+        return userService.createUser(newUser);
     }
 
     @PostMapping("/login")
