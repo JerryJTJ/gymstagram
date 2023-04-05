@@ -28,6 +28,11 @@ public interface PostAPI {
     @POST("/photo")
     Call<String> addPhoto(@Part MultipartBody.Part image);
 
+
+    @GET("/posts/user/{userId}")
+    public Call<List<Post>> getAllPostsByUserId(@Path("userId") String userId);
+
+
 }
 
 

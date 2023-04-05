@@ -120,8 +120,6 @@ public class NewPost extends Fragment {
             }
         });
 
-
-
         binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +139,8 @@ public class NewPost extends Fragment {
                 Date dNow = new Date();
                 SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
                 String id = ft.format(dNow);
-                Post post = new Post(id, userName, description);
+
+                Post post = new Post(id, MainActivity.userId, description);
                 Call<Post> newPost = ApiClient.getPostService().createPost(post);
                 newPost.enqueue(new Callback<Post>() {
                     @Override
@@ -155,8 +154,6 @@ public class NewPost extends Fragment {
                         Log.e("Add Post", "onFailure: Could not add post");
                     }
                 });
-
-//                viewModel.addPost(newPost);
             }
         });
     }

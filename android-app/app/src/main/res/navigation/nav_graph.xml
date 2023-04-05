@@ -118,4 +118,9 @@
         android:name="com.example.gymstagram.HistoryPage"
         android:label="fragment_history_page"
         tools:layout="@layout/fragment_history_page" />
+    <fragment
+        android:id="@+id/explorePage"
+        android:name="com.example.gymstagram.ExplorePage"
+        android:label="fragment_explore_page"
+        tools:layout="@layout/fragment_explore_page" />
 </navigation>
