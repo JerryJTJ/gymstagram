@@ -1,5 +1,6 @@
 package com.example.gymstagram.retrofit;
 
+import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.WorkoutAPI;
 
 import okhttp3.OkHttpClient;
@@ -34,5 +35,9 @@ public class ApiClient {
     public static PostAPI getPostService(){
         PostAPI postAPI = getRetrofit().create(PostAPI.class);
         return postAPI;
+    }
+    public static UserAPI getUserService(){
+        UserAPI userAPI = getRetrofit().create(UserAPI.class);
+        return userAPI;
     }
 }

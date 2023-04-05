@@ -21,12 +21,17 @@ import com.example.gymstagram.model.Workout;
 import com.example.gymstagram.retrofit.ApiClient;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class NewWorkout extends Fragment {
 
     private FragmentNewWorkoutBinding binding;
     Utils utils = new Utils();
 
-    TextInputEditText name, reps, sets, weight, duration;
+    TextInputEditText name, reps, sets, weight;
     Button add_workout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class NewWorkout extends Fragment {
         reps = view.findViewById(R.id.reps);
         sets = view.findViewById(R.id.sets);
         weight = view.findViewById(R.id.weight);
-        duration = view.findViewById(R.id.duration);
+//        duration = view.findViewById(R.id.duration);
         add_workout = view.findViewById(R.id.add_workout);
 
         add_workout.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +75,7 @@ public class NewWorkout extends Fragment {
         workout.setReps(utils.convertEditTextToInt(reps));
         workout.setSets(utils.convertEditTextToInt(sets));
         workout.setWeight(utils.convertEditTextToInt(weight));
-        workout.setDuration(utils.convertEditTextToInt(duration));
+//        workout.setDuration(utils.convertEditTextToInt(duration));
 
         return workout;
     }
@@ -104,7 +109,7 @@ public class NewWorkout extends Fragment {
         reps = view.findViewById(R.id.reps);
         sets = view.findViewById(R.id.sets);
         weight = view.findViewById(R.id.weight);
-        duration = view.findViewById(R.id.duration);
+//        duration = view.findViewById(R.id.duration);
         add_workout = view.findViewById(R.id.add_workout);
 
         add_workout.setOnClickListener(new View.OnClickListener() {
@@ -122,13 +127,13 @@ public class NewWorkout extends Fragment {
             }
         });
 
-        binding.buttonAddPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(NewWorkout.this)
-                        .navigate(R.id.action_newWorkout_to_photoWorkout);
-            }
-        });
+//        binding.buttonAddPhoto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                NavHostFragment.findNavController(NewWorkout.this)
+//                        .navigate(R.id.action_newWorkout_to_photoWorkout);
+//            }
+//        });
 
     }
 
