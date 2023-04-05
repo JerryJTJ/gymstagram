@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private BottomNavigationView bottomNavigationView;
+    public static String userId;
 
     Utils utils = new Utils();
 
@@ -57,14 +58,28 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController navController,
                                              @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
                 if (navDestination.getId() == R.id.loginFragment) {
-                    Log.d("CHECKING", "WE IN");
                     bottomNavigationView.setVisibility(View.GONE);
                 } else {
-                    Log.d("CHECKING", "NO GOOD");
                     bottomNavigationView.setVisibility(View.VISIBLE);
+
+                    switch (navDestination.getId()) {
+                        case R.id.addFragment:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_menu_add);
+                            break;
+                        case R.id.homeFeed:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_menu_home);
+                            break;
+                        case R.id.historyPage:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_menu_history);
+                            break;
+                        case R.id.followPage:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_menu_users);
+                            break;
+                    }
                 }
             }
         });
+
 
 //      Navigation buttons
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -104,11 +119,15 @@ public class MainActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_menu_history:
-                            // Handle workout/meal history button click
+                            if(navController.getCurrentDestination().getId() != R.id.historyPage){
+                                navController.navigate(R.id.historyPage);
+                            }
                             return true;
 
                         case R.id.nav_menu_users:
-                            // Handle users button click
+                            if(navController.getCurrentDestination().getId() != R.id.followPage){
+                                navController.navigate(R.id.followPage);
+                            }
                             return true;
 
                         default:
