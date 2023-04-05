@@ -1,27 +1,57 @@
 package com.example.gymstagram;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.LinearLayout;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
+import com.example.gymstagram.model.Post;
+import com.example.gymstagram.retrofit.ApiClient;
+
 import androidx.core.content.ContextCompat;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeFeed extends Fragment {
 
     private FragmentHomeFeedBinding binding;
     private PostsViewModel viewModel;
     private View view;
     LinearLayout linearLayout;
+    private int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = getContext().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
+    }
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
     public HomeFeed() {
         // Required empty public constructor
     }
@@ -33,42 +63,64 @@ public class HomeFeed extends Fragment {
     ) {
         binding = FragmentHomeFeedBinding.inflate(inflater, container, false);
         view = inflater.inflate(R.layout.fragment_home_feed, container, false);
-
+        //TODO: Move the photo permissions to a more logical page
+        boolean permissionsGiven = checkPermissionForReadExtertalStorage();
+        if (!permissionsGiven){
+            try {
+                requestPermissionForReadExtertalStorage();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
-        linearLayout = (LinearLayout)view.findViewById(R.id.linearlayout);
+        linearLayout = (LinearLayout)view.findViewById(R.id.homefeedlinearlayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(70,20,70,70);
         linearLayout.setVerticalScrollBarEnabled(true);
 
-        List<Post> posts = viewModel.getPosts();
+        viewModel = new ViewModelProvider(requireActivity()).get(PostsViewModel.class);
 
-        if (posts != null){
-            for (int i = 0; i < posts.size(); i++) {
-                TextView textView = new TextView(getContext());
-                textView.setText("@"+posts.get(i).getTitle() + "\n" + posts.get(i).getDescription());
-                textView.setMinHeight(400);
-                textView.setTextSize(20);
-                textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.back));
+        // just displaying all posts for now
+        Call<List<Post>> allPostsResponse = ApiClient.getPostService().getAllPosts();
+        allPostsResponse.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.isSuccessful()){
+                    List<Post> posts = response.body();
+                    //show recent posts first
+                    Collections.reverse(posts);
+                    if (posts != null){
+                        for (int i = 0; i < posts.size(); i++) {
+                            String userID = posts.get(i).getUserId();
+                            String id = posts.get(i).getId();
+                            String dateAndLocation = convertTime(posts.get(i).getTimestamp());
+                            String postContent = posts.get(i).getDescription();
+                            String numLikesToDisplay = posts.get(i).getLikes() + " likes";
+                            CardForPost cardView = new CardForPost(getContext());
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
+                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
-                textView.setPadding(20,20,20,60);
-                TextView dateAndLocationView = new TextView(getContext());
-                dateAndLocationView.setText(posts.get(i).getDateCreated() + " , CIF, Waterloo, ON");
-                dateAndLocationView.setTextSize(16);
-                dateAndLocationView.setY(-75);
-                dateAndLocationView.setX(20);
-
-                linearLayout.addView(textView);
-                linearLayout.addView(dateAndLocationView);
+                            linearLayout.addView(cardView);
+                        }
+                    }
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+
+            }
+        });
 
     }
-
+    public String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
+        return format.format(date);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
