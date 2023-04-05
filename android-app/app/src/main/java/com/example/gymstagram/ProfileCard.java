@@ -128,7 +128,16 @@ public class ProfileCard extends Fragment {
                 }
             }
         });
+
+        //Report button
+        binding.buttonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
     }
+
+
 
     private void handleButtonAppearance(boolean newFollow){
         Button followButton = getView().findViewById(R.id.button_follow);
