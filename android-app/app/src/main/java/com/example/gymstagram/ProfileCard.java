@@ -144,15 +144,15 @@ public class ProfileCard extends Fragment {
         if(newFollow){
             //Just clicked follow
             followButton.setText("-");
-            ColorStateList greenColorStateList = ColorStateList.valueOf(getResources().getColor(R.color.green));
-            followButton.setBackgroundTintList(greenColorStateList);
+            ColorStateList colour = ColorStateList.valueOf(getResources().getColor(R.color.green));
+            followButton.setBackgroundTintList(colour);
             cardIsFollowing = true;
         }
         else{
             //Just clicked unfollow
             followButton.setText("+");
-            ColorStateList greenColorStateList = ColorStateList.valueOf(getResources().getColor(R.color.purple));
-            followButton.setBackgroundTintList(greenColorStateList);
+            ColorStateList colour = ColorStateList.valueOf(getResources().getColor(R.color.purple));
+            followButton.setBackgroundTintList(colour);
             cardIsFollowing = false;
         }
     }
