@@ -92,18 +92,18 @@ public class PostController {
      * Likes the post with the given ID.
      * @param id The ID of the post to like
      */
-    @PutMapping("/{id}/like")
-    public void likePost(@PathVariable String id) {
-        postService.incrementPostLike(id);
+    @PutMapping("/{id}/like/{userId}")
+    public void likePost(@PathVariable String id, @PathVariable String userId) {
+        postService.addLike(id, userId);
     }
 
     /**
      * Unlikes the post with the given ID.
      * @param id The ID of the post to unlike
      */
-    @PutMapping("/{id}/unlike")
-    public void unlikePost(@PathVariable String id) {
-        postService.decrementPostLike(id);
+    @PutMapping("/{id}/unlike/{userId}")
+    public void unlikePost(@PathVariable String id, @PathVariable String userId) {
+        postService.removeLike(id, userId);
     }
 
     /**

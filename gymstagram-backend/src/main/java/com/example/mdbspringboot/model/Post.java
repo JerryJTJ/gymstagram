@@ -18,7 +18,7 @@ public class Post {
     private String userId;
     private String description;
     private List<String> mediaIds;
-    private int likes;
+    private List<String> userIdLikes;
     private List<Comment> comments;
     private long timestamp;
 
@@ -27,7 +27,7 @@ public class Post {
         this.id = id;
         this.userId = userId;
         this.description = description;
-        this.likes = 0;
+        this.userIdLikes = new ArrayList<>();
         this.mediaIds = new ArrayList<>();
         this.comments = new ArrayList<>();
         this.timestamp = System.currentTimeMillis();
@@ -49,8 +49,8 @@ public class Post {
         return mediaIds;
     }
 
-    public int getLikes() {
-        return likes;
+    public List<String> getUserIdLikes() {
+        return userIdLikes;
     }
 
     public List<Comment> getComments() {
@@ -77,12 +77,12 @@ public class Post {
         this.mediaIds = mediaIds;
     }
 
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public void setUserIdLikes(List<String> userIdLikes) {
+        this.userIdLikes = userIdLikes;
     }
 
     public void setTimestamp(long timestamp) {

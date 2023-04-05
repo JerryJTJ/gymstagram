@@ -85,24 +85,24 @@ public class PostService {
         }
     }
 
-    public void incrementPostLike(String postId) {
+    public void addLike(String postId, String userId) {
         Optional<Post> existingPost = postRepository.findById(postId);
         if(existingPost.isPresent()) {
             Post updatedPost = existingPost.get();
-            int currentLikes = updatedPost.getLikes();
-            updatedPost.setLikes(currentLikes + 1);
+            List<String> currentLikes = updatedPost.getUserIdLikes();
+            currentLikes.add(userId);
+            updatedPost.setUserIdLikes(currentLikes);
             postRepository.save(updatedPost);
         }
     }
 
-    public void decrementPostLike(String postId) {
+    public void removeLike(String postId, String userId) {
         Optional<Post> existingPost = postRepository.findById(postId);
         if(existingPost.isPresent()) {
             Post updatedPost = existingPost.get();
-            int currentLikes = updatedPost.getLikes();
-            if (currentLikes > 0 ) {
-                updatedPost.setLikes(currentLikes - 1);
-            } 
+            List<String> currentLikes = updatedPost.getUserIdLikes();
+            currentLikes.remove(userId);
+            updatedPost.setUserIdLikes(currentLikes);
             postRepository.save(updatedPost);
         }
     }
