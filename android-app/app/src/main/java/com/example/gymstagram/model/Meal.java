@@ -1,5 +1,7 @@
 package com.example.gymstagram.model;
 
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 
 public class Meal {
@@ -19,6 +21,8 @@ public class Meal {
     private int carbs;
     private int protein;
     private int fat;
+    private Date creationDate;
+
 
     @Override
     public String toString() {
@@ -30,6 +34,26 @@ public class Meal {
                 ", protein='" + protein + '\'' +
                 ", fat='" + fat + '\'' +
                 '}';
+    }
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public int getCarbs() {
+        return carbs;
+    }
+
+    public int getFat() {
+        return fat;
+    }
+
+    public int getProtein() {
+        return protein;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
     }
 }
 
