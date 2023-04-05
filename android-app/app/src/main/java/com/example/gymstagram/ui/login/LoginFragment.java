@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -66,8 +63,6 @@ public class LoginFragment extends Fragment {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
 
-        String message = "Hello, world!";
-        Log.d("MyApp", message);
 //        return binding.getRoot();
 
         View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -79,10 +74,29 @@ public class LoginFragment extends Fragment {
         reg = view.findViewById(R.id.register);
         login.setEnabled(true);
         reg.setEnabled(true);
+        sharedPreferences = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        if (sharedPreferences.contains("user_id")){
+            Log.d("CLEANING","CLEANING");
+            sharedPreferences.edit().putString("user_id", "-").apply();
+
+        }
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginUser();
+                try {
+                    Toast.makeText(getActivity(), "Loading...", Toast.LENGTH_SHORT).show();
+                    Thread.sleep(1000); // Sleep for 1000 milliseconds (1 second)
+                } catch (InterruptedException e) {
+                    // Handle the exception
+                }
+                Log.d("ACCESSing this", sharedPreferences.getString("user_id", "-"));
+                if (!sharedPreferences.getString("user_id", "-").equals("-")){
+                    Log.d("CURRENT", "GOING AWAY");
+                    NavHostFragment.findNavController(LoginFragment.this)
+                            .navigate(R.id.action_loginFragment_to_homeFeed);
+                }
+
 
             }
         });
@@ -94,7 +108,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        sharedPreferences = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+
 
         return view;
 
@@ -124,11 +138,9 @@ public class LoginFragment extends Fragment {
                     jsonParam.put("password", password);
 
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    Log.d("MyApasdasdap", os.toString());
                     os.writeBytes(jsonParam.toString());
                     os.flush();
                     os.close();
-                    Log.d("MyApp", jsonParam.toString());
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     StringBuilder sb = new StringBuilder();
@@ -153,7 +165,7 @@ public class LoginFragment extends Fragment {
 
                         JSONObject response = new JSONObject(sb.toString());
                         if (response.has("id")) {
-                            Log.d("MyApp", "WE ARE ONE");
+                            Log.d("SUCCESS", "SUCCESS");
 
                             //Login successful
                             final String id = response.getString("id");
@@ -164,8 +176,7 @@ public class LoginFragment extends Fragment {
                                     Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            NavHostFragment.findNavController(LoginFragment.this)
-                                    .navigate(R.id.action_loginFragment_to_homeFeed);
+
                         }
 
                     }
