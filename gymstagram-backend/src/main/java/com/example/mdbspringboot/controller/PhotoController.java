@@ -34,7 +34,7 @@ public class PhotoController {
      * @throws IOException If an I/O error occurs while processing the photo.
      */
     @PostMapping("")
-    public String addPhoto(@RequestParam("image") MultipartFile image, Model model) 
+    public String addPhoto(@RequestParam("image") MultipartFile image) 
     throws IOException {
         String id = photoService.addPhoto(image);
         return id;

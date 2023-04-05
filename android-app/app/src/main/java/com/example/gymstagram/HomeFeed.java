@@ -5,13 +5,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,7 +34,24 @@ public class HomeFeed extends Fragment {
     private PostsViewModel viewModel;
     private View view;
     LinearLayout linearLayout;
+    private int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
+    public boolean checkPermissionForReadExtertalStorage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int result = getContext().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
+    }
+    public void requestPermissionForReadExtertalStorage() throws Exception {
+        try {
+            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
     public HomeFeed() {
         // Required empty public constructor
     }
@@ -43,7 +63,15 @@ public class HomeFeed extends Fragment {
     ) {
         binding = FragmentHomeFeedBinding.inflate(inflater, container, false);
         view = inflater.inflate(R.layout.fragment_home_feed, container, false);
-
+        //TODO: Move the photo permissions to a more logical page
+        boolean permissionsGiven = checkPermissionForReadExtertalStorage();
+        if (!permissionsGiven){
+            try {
+                requestPermissionForReadExtertalStorage();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         return binding.getRoot();
     }
 

@@ -2,13 +2,21 @@ package com.example.gymstagram;
 
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import utils.FileUtil;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +27,7 @@ import com.example.gymstagram.databinding.FragmentNewPostBinding;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.retrofit.ApiClient;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,17 +35,51 @@ public class NewPost extends Fragment {
 
     private FragmentNewPostBinding binding;
     private PostsViewModel viewModel;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+    private String photoID;
 
-    @Override
+        @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
         View view = inflater.inflate(R.layout.fragment_new_post, container, false);
-
         binding = FragmentNewPostBinding.inflate(inflater, container, false);
-        return binding.getRoot();
 
+        pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        File file = new File(FileUtil.getPath(uri, getContext()));
+
+                        RequestBody requestFile = RequestBody.create(file,MediaType.parse("multipart/form-data"));
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+                        Call<String> addphoto = ApiClient.getPostService().addPhoto(filePart);
+                        addphoto.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                if(response.isSuccessful()){
+                                    photoID = response.body();
+                                    Log.i("hhhh", "photoid" + photoID);
+                                } else{
+                                    photoID = response.body();
+                                    //hhhh: fix this - it returns a 400 bad request
+                                    Log.i("hhhh", "boo" + photoID + response.errorBody());
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                Log.e("hhhh", "onFailure: Could not add post" + t);
+                            }
+                        });
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -47,6 +90,12 @@ public class NewPost extends Fragment {
             @Override
             public void onClick(View view) {
                 //Handler here
+                //Android studio complains about the following line but it compiles fine
+                ActivityResultContracts.PickVisualMedia.VisualMediaType mediaType = (ActivityResultContracts.PickVisualMedia.VisualMediaType) ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE;
+
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(mediaType)
+                        .build());
             }
         });
 
