@@ -2,6 +2,8 @@ package com.example.gymstagram.model;
 
 public class Workout {
     private String name;
+
+    private String date;
     private int reps;
     private int sets;
     private int weight;
@@ -13,6 +15,14 @@ public class Workout {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getReps() {

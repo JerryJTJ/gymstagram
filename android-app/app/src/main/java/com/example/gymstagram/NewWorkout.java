@@ -26,7 +26,7 @@ public class NewWorkout extends Fragment {
     private FragmentNewWorkoutBinding binding;
     Utils utils = new Utils();
 
-    TextInputEditText name, reps, sets, weight, duration;
+    TextInputEditText name, reps, sets, weight, duration, date;
     Button add_workout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class NewWorkout extends Fragment {
         name = view.findViewById(R.id.name);
         reps = view.findViewById(R.id.reps);
         sets = view.findViewById(R.id.sets);
+        date = view.findViewById(R.id.workoutdate);
         weight = view.findViewById(R.id.weight);
         duration = view.findViewById(R.id.duration);
         add_workout = view.findViewById(R.id.add_workout);
@@ -69,6 +70,7 @@ public class NewWorkout extends Fragment {
         workout.setName(utils.convertEditTextToString(name));
         workout.setReps(utils.convertEditTextToInt(reps));
         workout.setSets(utils.convertEditTextToInt(sets));
+        workout.setDate(utils.convertEditTextToString(date));
         workout.setWeight(utils.convertEditTextToInt(weight));
         workout.setDuration(utils.convertEditTextToInt(duration));
 
@@ -103,6 +105,7 @@ public class NewWorkout extends Fragment {
         name = view.findViewById(R.id.name);
         reps = view.findViewById(R.id.reps);
         sets = view.findViewById(R.id.sets);
+        date = view.findViewById(R.id.workoutdate);
         weight = view.findViewById(R.id.weight);
         duration = view.findViewById(R.id.duration);
         add_workout = view.findViewById(R.id.add_workout);
