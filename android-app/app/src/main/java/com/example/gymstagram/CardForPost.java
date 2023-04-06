@@ -167,7 +167,9 @@ public class CardForPost extends LinearLayout {
                 .apply(requestOptions)
                 .into(postImage);
 
-
+        if (photo == null ) {
+            postImage.setVisibility(GONE);
+        }
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
         numLikes.setText(num_likes + " likes");

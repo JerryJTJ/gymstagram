@@ -116,8 +116,11 @@ public class HomeFeed extends Fragment {
                                             for (int i = 0; i < posts.size(); i++) {
                                                 String userID = posts.get(i).getUserId();
                                                 String id = posts.get(i).getId();
-                                                String photo = postsByUser.get(i).getphoto().get(0);
-
+                                                List<String> photos = postsByUser.get(i).getphoto();
+                                                String photo = null;
+                                                if (!posts.get(i).getphoto().isEmpty()){
+                                                    photo = postsByUser.get(i).getphoto().get(0);
+                                                }
                                                 String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                                                 String postContent = posts.get(i).getDescription();
                                                 int numLikesToDisplay = posts.get(i).getNumLikes();

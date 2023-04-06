@@ -72,7 +72,6 @@ public class ExplorePage extends Fragment {
                         for (int i = 0; i < posts.size(); i++) {
                             String userID = posts.get(i).getUserId();
                             String photo = null;
-//                            Log.d("HHHHHHHHHHHH", "UO"+posts.get(i).getphoto().get(0));
                             if (!posts.get(i).getphoto().isEmpty()){
 
                                 photo = posts.get(i).getphoto().get(0);
