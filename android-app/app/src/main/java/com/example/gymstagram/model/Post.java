@@ -21,17 +21,21 @@ public class Post {
         userId = "some title";
         description = "some description";
     }
-    public Post(String id_, String userId_, String description_){
+
+    public Post(String id_, String userId_, String description_, List<String> photos){
         id = id_;
         userId = userId_;
         description = description_;
-        mediaIds = Collections.emptyList();
+        mediaIds = photos;
         likes = 0;
         comments = Collections.emptyList();
         timestamp = 1;
     }
     public String getDescription(){
         return description;
+    }
+    public List<String> getphoto(){
+        return mediaIds;
     }
     public String getUserId() { return userId; }
 //    public String getDateCreated() {

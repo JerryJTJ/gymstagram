@@ -1,5 +1,6 @@
 package com.example.gymstagram.retrofit;
 
+import com.example.gymstagram.NewPost;
 import com.example.gymstagram.model.Post;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface PostAPI {
 
     @Multipart
     @POST("/photo")
-    Call<String> addPhoto(@Part MultipartBody.Part image);
+    Call<NewPost.MyResponse> addPhoto(@Part MultipartBody.Part image);
 
 
     @GET("/posts/user/{userId}")

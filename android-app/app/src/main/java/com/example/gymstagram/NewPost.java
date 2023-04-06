@@ -6,6 +6,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import com.google.gson.Gson;
 import okhttp3.ResponseBody;
+import java.util.List;
+import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Call;
@@ -43,6 +45,13 @@ public class NewPost extends Fragment {
     private FragmentNewPostBinding binding;
     private PostsViewModel viewModel;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+    public class MyResponse {
+        private String photoId;
+
+        public String getphoto() {
+            return photoId;
+        }
+    }
     private String photoID;
     private String userName;
 
@@ -65,26 +74,23 @@ public class NewPost extends Fragment {
                         RequestBody requestFile = RequestBody.create(file,MediaType.parse("multipart/form-data"));
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-                        Call<String> addphoto = ApiClient.getPostService().addPhoto(filePart);
+                        Call<MyResponse> addphoto = ApiClient.getPostService().addPhoto(filePart);
                         Log.i("UUUUUUU", addphoto.toString());
-                        addphoto.enqueue(new Callback<String>() {
+                        addphoto.enqueue(new Callback<MyResponse>() {
                             @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                Log.e("CHICKENCHICKEN", "CHICKEN");
+                            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                 if(response.isSuccessful()){
-                                    JsonObject jsonObject = response.body();
-
-
-                                    photoID = response.body();
-                                    Log.i("hhhh", "photoid" + photoID);
+                                    response.body();
+                                    photoID = response.body().getphoto();
+                                    Log.i("hhhh", "photoid" + response.body().photoId);
                                 } else{
-                                    photoID = response.body();
+//                                    photoID = response.body();
                                     //hhhh: fix this - it returns a 400 bad request
                                     Log.i("hhhh", "boo" + photoID + response.errorBody());
                                 }
                             }
                             @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                            public void onFailure(Call<MyResponse> call, Throwable t) {
                                 Log.e("hhhh", "onFailure: Could not add post" + t);
 //                                Log.i("uuuuuuuuuuuu", "boo" + photoID + response.errorBody());
                             }
@@ -150,8 +156,10 @@ public class NewPost extends Fragment {
                 Date dNow = new Date();
                 SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");
                 String id = ft.format(dNow);
-
-                Post post = new Post(id, MainActivity.userId, description);
+                List<String> photos = new ArrayList<>();
+                photos.add(photoID);
+                Post post = new Post(id, MainActivity.userId, description, photos);
+                Log.e("PHOTOOBJECT", "hERE:"+post.getphoto());
                 Call<Post> newPost = ApiClient.getPostService().createPost(post);
                 newPost.enqueue(new Callback<Post>() {
                     @Override

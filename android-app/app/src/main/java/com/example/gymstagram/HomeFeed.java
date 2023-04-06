@@ -109,11 +109,12 @@ public class HomeFeed extends Fragment {
                                     for (int i = 0; i < postsByUser.size(); i++) {
                                         String userIDD = postsByUser.get(i).getUserId();
                                         String id = postsByUser.get(i).getId();
+                                        String photo = postsByUser.get(i).getphoto().get(0);
                                         String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
                                         String postContent = postsByUser.get(i).getDescription();
                                         String numLikesToDisplay = postsByUser.get(i).getLikes() + " likes";
                                         CardForPost cardView = new CardForPost(getContext());
-                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay);
+                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay, photo);
                                         cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                                         linearLayout.addView(cardView);

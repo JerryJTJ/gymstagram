@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,12 +71,19 @@ public class ExplorePage extends Fragment {
                     if (posts != null){
                         for (int i = 0; i < posts.size(); i++) {
                             String userID = posts.get(i).getUserId();
+                            String photo = null;
+//                            Log.d("HHHHHHHHHHHH", "UO"+posts.get(i).getphoto().get(0));
+                            if (!posts.get(i).getphoto().isEmpty()){
+
+                                photo = posts.get(i).getphoto().get(0);
+                            }
+
                             String id = posts.get(i).getId();
                             String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                             String postContent = posts.get(i).getDescription();
                             String numLikesToDisplay = posts.get(i).getLikes() + " likes";
                             CardForPost cardView = new CardForPost(getContext());
-                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                             linearLayout.addView(cardView);
