@@ -27,9 +27,11 @@ public class Post {
         userId = userId_;
         description = description_;
 
+
         mediaIds = photos;
         userIdLikes = Collections.emptyList();
         mediaIds = photos;
+
         comments = Collections.emptyList();
     }
     public String getDescription(){

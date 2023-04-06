@@ -87,7 +87,6 @@ public class ExplorePage extends Fragment {
 
                             CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
-                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
 
 
                             cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
