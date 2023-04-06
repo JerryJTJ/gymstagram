@@ -71,16 +71,25 @@ public class ExplorePage extends Fragment {
                     if (posts != null){
                         for (int i = 0; i < posts.size(); i++) {
                             String userID = posts.get(i).getUserId();
+                            String photo = null;
+//                            Log.d("HHHHHHHHHHHH", "UO"+posts.get(i).getphoto().get(0));
+                            if (!posts.get(i).getphoto().isEmpty()){
+
+                                photo = posts.get(i).getphoto().get(0);
+                            }
+
                             String id = posts.get(i).getId();
                             String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                             String postContent = posts.get(i).getDescription();
                             int numLikesToDisplay = posts.get(i).getNumLikes();
+
                             boolean liked = posts.get(i).getLikes().contains(MainActivity.userId);
 
                             CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
-                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
 
+
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                             linearLayout.addView(cardView);

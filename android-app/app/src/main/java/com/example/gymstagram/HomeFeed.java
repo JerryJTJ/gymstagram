@@ -111,9 +111,13 @@ public class HomeFeed extends Fragment {
                                         //show recent posts first
                                         Collections.reverse(posts);
                                         if (posts != null){
+
+                                            List<Post> postsByUser = response.body();
                                             for (int i = 0; i < posts.size(); i++) {
                                                 String userID = posts.get(i).getUserId();
                                                 String id = posts.get(i).getId();
+                                                String photo = postsByUser.get(i).getphoto().get(0);
+
                                                 String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                                                 String postContent = posts.get(i).getDescription();
                                                 int numLikesToDisplay = posts.get(i).getNumLikes();
@@ -121,7 +125,8 @@ public class HomeFeed extends Fragment {
 
                                                 CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
-                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
+                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
+
 
                                                 cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 

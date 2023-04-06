@@ -1,6 +1,9 @@
 package com.example.gymstagram;
 import android.content.Context;
 import android.util.Log;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -137,7 +140,7 @@ public class CardForPost extends LinearLayout {
             }
         });
     }
-    public void updateCard(String id,String userID_, String locAndDate, String post_content, int num_likes){
+    public void updateCard(String id,String userID_, String locAndDate, String post_content, int num_likes, String photo){
         RetrofitService retrofitService = new RetrofitService();
         UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         Call<User> postUser = userAPI.getUserById(userID_);
@@ -153,6 +156,17 @@ public class CardForPost extends LinearLayout {
                 username.setText("default ;(");
             }
         });
+        String imageUrl = "http://10.0.2.2:8080/photo/"+photo;
+        Log.e("BBBBBBB", "o0: "+photo);
+// Create a new instance of the RequestOptions class with the centerCrop() and diskCacheStrategy() methods
+        RequestOptions requestOptions = new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL);
+
+// Load the image into the ImageView using Glide
+        Glide.with(this)
+                .load(imageUrl)
+                .apply(requestOptions)
+                .into(postImage);
+
 
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
