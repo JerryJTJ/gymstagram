@@ -1,5 +1,6 @@
 package com.example.gymstagram.retrofit;
 
+import com.example.gymstagram.model.Comment;
 import com.example.gymstagram.model.Post;
 
 import java.util.List;
@@ -32,7 +33,8 @@ public interface PostAPI {
     @GET("/posts/user/{userId}")
     public Call<List<Post>> getAllPostsByUserId(@Path("userId") String userId);
 
-
+    @POST("posts/{id}/comment")
+    public Call<Comment> addCommentToPost(@Path("id") String id, @Body Comment comment);
 }
 
 

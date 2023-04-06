@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
+import com.example.gymstagram.model.Comment;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.ApiClient;
@@ -109,11 +110,13 @@ public class HomeFeed extends Fragment {
                                     for (int i = 0; i < postsByUser.size(); i++) {
                                         String userIDD = postsByUser.get(i).getUserId();
                                         String id = postsByUser.get(i).getId();
+                                        List<Comment> commentsList = postsByUser.get(i).getComments();
+                                        Log.i("hhhh", "onResponse: " + commentsList);
                                         String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
                                         String postContent = postsByUser.get(i).getDescription();
                                         String numLikesToDisplay = postsByUser.get(i).getLikes() + " likes";
                                         CardForPost cardView = new CardForPost(getContext());
-                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay);
+                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay, commentsList);
                                         cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                                         linearLayout.addView(cardView);

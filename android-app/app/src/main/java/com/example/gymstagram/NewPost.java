@@ -58,6 +58,7 @@ public class NewPost extends Fragment {
                         File file = new File(FileUtil.getPath(uri, getContext()));
 
                         RequestBody requestFile = RequestBody.create(file,MediaType.parse("multipart/form-data"));
+//                        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
                         Call<String> addphoto = ApiClient.getPostService().addPhoto(filePart);

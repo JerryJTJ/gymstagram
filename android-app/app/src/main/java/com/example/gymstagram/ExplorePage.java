@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.gymstagram.databinding.FragmentExplorePageBinding;
+import com.example.gymstagram.model.Comment;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.retrofit.ApiClient;
 
@@ -75,7 +76,9 @@ public class ExplorePage extends Fragment {
                             String postContent = posts.get(i).getDescription();
                             String numLikesToDisplay = posts.get(i).getLikes() + " likes";
                             CardForPost cardView = new CardForPost(getContext());
-                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
+                            List<Comment> commentsList = posts.get(i).getComments();
+
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, commentsList);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                             linearLayout.addView(cardView);

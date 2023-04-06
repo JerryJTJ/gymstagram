@@ -12,9 +12,10 @@ public class Post {
     private String description;
     private List<String> mediaIds;
     private int likes;
-    private List<String> comments;
+//    private List<String> comments;
     //List<Comment>
     private long timestamp;
+    private List<Comment> comments;
 
 
     public Post(){
@@ -49,5 +50,9 @@ public class Post {
     }
     public String getId() {
         return id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }
