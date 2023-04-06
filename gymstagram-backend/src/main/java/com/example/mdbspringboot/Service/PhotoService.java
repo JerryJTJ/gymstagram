@@ -14,6 +14,8 @@ import com.example.mdbspringboot.model.Photo;
 import com.example.mdbspringboot.repository.PhotoRepository;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,12 +24,15 @@ public class PhotoService {
     @Autowired
     private PhotoRepository photoRepo;
 
-    public String addPhoto(MultipartFile file) throws IOException { 
-        Photo photo = new Photo(); 
-        photo.setImage(
-          new Binary(BsonBinarySubType.BINARY, file.getBytes())); 
-        photo = photoRepo.insert(photo); 
-        return photo.getId().toString(); 
+    public Map<String, Object> addPhoto(MultipartFile file) throws IOException {
+        Photo photo = new Photo();
+        photo.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        photo = photoRepo.insert(photo);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("photoId", photo.getId().toString());
+        
+        return result;
     }
 
     public ResponseEntity<Object> getPhoto(String id) { 
