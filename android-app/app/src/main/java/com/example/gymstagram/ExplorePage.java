@@ -81,7 +81,7 @@ public class ExplorePage extends Fragment {
                             String id = posts.get(i).getId();
                             String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                             String postContent = posts.get(i).getDescription();
-                            String numLikesToDisplay = posts.get(i).getLikes() + " likes";
+                            int numLikesToDisplay = posts.get(i).getNumLikes();
                             CardForPost cardView = new CardForPost(getContext());
                             cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));

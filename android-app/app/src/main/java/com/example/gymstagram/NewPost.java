@@ -159,7 +159,7 @@ public class NewPost extends Fragment {
                 List<String> photos = new ArrayList<>();
                 photos.add(photoID);
                 Post post = new Post(id, MainActivity.userId, description, photos);
-                Log.e("PHOTOOBJECT", "hERE:"+post.getphoto());
+                Log.e("PHOTOOBJECT", photoID+"hERE:"+post.getphoto());
                 Call<Post> newPost = ApiClient.getPostService().createPost(post);
                 newPost.enqueue(new Callback<Post>() {
                     @Override
