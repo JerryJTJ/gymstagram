@@ -35,6 +35,9 @@ public interface PostAPI {
     @PUT("/posts/{id}/like/{userId}")
     Call<Void> likePost(@Path("id") String id, @Path("userId") String userId);
 
+    @PUT("/posts/{id}/unlike/{userId}")
+    Call<Void> unlikePost(@Path("id") String id, @Path("userId") String userId);
+
 
 
 }
