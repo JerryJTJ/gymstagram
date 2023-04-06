@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.gymstagram.model.Post;
@@ -33,13 +34,29 @@ public class CardForPost extends LinearLayout {
     private ImageView likeButton;
 
     boolean toggleLike;
+    //false if already liked, true if not liked
     int numm;
     String postID;
 
-    public CardForPost(Context context)
+    public CardForPost(Context context, boolean liked, int numLikes)
     {
         super(context);
         initControl(context);
+
+        //Check if post is already liked
+        toggleLike = !liked;
+
+        numm = numLikes;
+
+        if(toggleLike){
+            //Not liked
+            likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+        }
+        else{
+            //Liked
+            likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+        }
+
     }
     private void initControl(Context context)
     {
@@ -56,8 +73,6 @@ public class CardForPost extends LinearLayout {
         numLikes = (TextView)findViewById(R.id.num_likes);
         likeButton = (ImageView)findViewById(R.id.like);
 
-        toggleLike = true;
-
         //Make retrofit service
         RetrofitService retrofitService = new RetrofitService();
         PostAPI postAPI = retrofitService.getRetrofit().create(PostAPI.class);
@@ -67,15 +82,56 @@ public class CardForPost extends LinearLayout {
             public void onClick(View v) {
                 if (toggleLike){
                     //LIKE POST
-                    numm += 1;
-                    numLikes.setText(numm + " likes");
-                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+                    Log.d("JERRY", "LIKE POST");
+
+                    Call<Void> likeCall = postAPI.likePost(postID, MainActivity.userId);
+
+                    Log.d("JERRY", "POST ID " + postID);
+                    Log.d("Jerry", "user id " + MainActivity.userId);
+
+                    likeCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                numm += 1;
+                                numLikes.setText(numm + " likes");
+                                likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+                            } else {
+                                Toast.makeText(getContext(), "Error liking", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getContext(), "Error liking", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 else{
                     //UNLIKE POST
-                    numm -= 1;
-                    numLikes.setText(numm + " likes");
-                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+                    Call<Void> unlikeCall = postAPI.unlikePost(postID, MainActivity.userId);
+                    Log.d("JERRY", "UNLIKE POST");
+
+                    unlikeCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                // Post unliked successfully
+                                numm -= 1;
+                                numLikes.setText(numm + " likes");
+                                likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+                            } else {
+                                Toast.makeText(getContext(), "Error unliking", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getContext(), "Error unliking", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
                 toggleLike = !toggleLike;
             }

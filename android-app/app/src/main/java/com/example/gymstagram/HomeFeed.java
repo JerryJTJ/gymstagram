@@ -1,6 +1,7 @@
 package com.example.gymstagram;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -106,23 +107,29 @@ public class HomeFeed extends Fragment {
                                 @Override
                                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
                                     if (response.isSuccessful()) {
-                                        List<Post> postsByUser = response.body();
+                                        List<Post> posts = response.body();
+                                        //show recent posts first
+                                        Collections.reverse(posts);
+                                        if (posts != null){
+                                            for (int i = 0; i < posts.size(); i++) {
+                                                String userID = posts.get(i).getUserId();
+                                                String id = posts.get(i).getId();
+                                                String dateAndLocation = convertTime(posts.get(i).getTimestamp());
+                                                String postContent = posts.get(i).getDescription();
+                                                int numLikesToDisplay = posts.get(i).getNumLikes();
+                                                boolean liked = posts.get(i).getLikes().contains(MainActivity.userId);
 
-                                        for (Post post : postsByUser) {
-                                            String userIDD = post.getUserId();
-                                            String id = post.getId();
-                                            String dateAndLocation = convertTime(post.getTimestamp());
-                                            String postContent = post.getDescription();
-                                            int numLikesToDisplay = post.getNumLikes();
-                                            CardForPost cardView = new CardForPost(getContext());
-                                            cardView.updateCard(id, userIDD, dateAndLocation, postContent, numLikesToDisplay);
-                                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+                                                CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
-                                            linearLayout.addView(cardView);
+                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay);
+
+                                                cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+
+                                                linearLayout.addView(cardView);
+                                            }
                                         }
                                     } else {
                                         // Handle HTTP error
-                                        Log.e("hhhh", "HTTP error: " + response.code());
                                     }
                                 }
 
