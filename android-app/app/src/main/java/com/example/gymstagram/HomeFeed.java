@@ -106,7 +106,6 @@ public class HomeFeed extends Fragment {
                             allPostsByUser.enqueue(new Callback<List<Post>>() {
                                 @Override
                                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-
                                     if (response.isSuccessful()) {
                                         List<Post> posts = response.body();
                                         //show recent posts first
@@ -122,17 +121,7 @@ public class HomeFeed extends Fragment {
                                                 int numLikesToDisplay = posts.get(i).getNumLikes();
                                                 boolean liked = posts.get(i).getLikes().contains(MainActivity.userId);
 
-<<<<<<< HEAD
-                                        for (Post post : postsByUser) {
-                                            String userIDD = post.getUserId();
-                                            String id = post.getId();
-                                            String photo = post.getphoto().get(0);
-                                            String dateAndLocation = convertTime(post.getTimestamp());
-                                            String postContent = post.getDescription();
-                                            int numLikesToDisplay = post.getNumLikes();
-                                            CardForPost cardView = new CardForPost(getContext());
-                                            cardView.updateCard(id, userIDD, dateAndLocation, postContent, numLikesToDisplay, photo);
-                                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+                                                CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
                                                 cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
 
