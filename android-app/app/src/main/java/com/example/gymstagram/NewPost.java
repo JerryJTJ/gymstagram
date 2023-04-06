@@ -4,7 +4,14 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
-
+import com.google.gson.Gson;
+import okhttp3.ResponseBody;
+import org.json.JSONException;
+import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import com.google.gson.JsonObject;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,9 +20,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import utils.FileUtil;
 
 import android.util.Log;
@@ -42,6 +46,7 @@ public class NewPost extends Fragment {
     private String photoID;
     private String userName;
 
+
         @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -56,15 +61,20 @@ public class NewPost extends Fragment {
                     // photo picker.
                     if (uri != null) {
                         File file = new File(FileUtil.getPath(uri, getContext()));
-
+//                        Log.i("uhuhuhuhhuh", "photoid" + uri + getRealPathFromURI);
                         RequestBody requestFile = RequestBody.create(file,MediaType.parse("multipart/form-data"));
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
                         Call<String> addphoto = ApiClient.getPostService().addPhoto(filePart);
+                        Log.i("UUUUUUU", addphoto.toString());
                         addphoto.enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
+                                Log.e("CHICKENCHICKEN", "CHICKEN");
                                 if(response.isSuccessful()){
+                                    JsonObject jsonObject = response.body();
+
+
                                     photoID = response.body();
                                     Log.i("hhhh", "photoid" + photoID);
                                 } else{
@@ -76,6 +86,7 @@ public class NewPost extends Fragment {
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
                                 Log.e("hhhh", "onFailure: Could not add post" + t);
+//                                Log.i("uuuuuuuuuuuu", "boo" + photoID + response.errorBody());
                             }
                         });
                         Log.d("PhotoPicker", "Selected URI: " + uri);
