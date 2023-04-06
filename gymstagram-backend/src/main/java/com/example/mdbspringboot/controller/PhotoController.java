@@ -18,6 +18,7 @@ import com.example.mdbspringboot.Service.PhotoService;
 
 import org.springframework.ui.Model;
 import java.io.IOException;
+import java.util.Map;
 
 
 @RestController
@@ -34,10 +35,9 @@ public class PhotoController {
      * @throws IOException If an I/O error occurs while processing the photo.
      */
     @PostMapping("")
-    public String addPhoto(@RequestParam("image") MultipartFile image) 
+    public Map<String, Object> addPhoto(@RequestParam("image") MultipartFile image) 
     throws IOException {
-        String id = photoService.addPhoto(image);
-        return id;
+        return photoService.addPhoto(image);
     }
     
     /**

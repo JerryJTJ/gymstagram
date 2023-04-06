@@ -11,8 +11,7 @@ public class Post {
     private String userId;
     private String description;
     private List<String> mediaIds;
-    private int likes;
-//    private List<String> comments;
+    private List<String> userIdLikes;
     //List<Comment>
     private long timestamp;
     private List<Comment> comments;
@@ -27,9 +26,8 @@ public class Post {
         userId = userId_;
         description = description_;
         mediaIds = Collections.emptyList();
-        likes = 0;
+        userIdLikes = Collections.emptyList();
         comments = Collections.emptyList();
-        timestamp = 1;
     }
     public String getDescription(){
         return description;
@@ -45,9 +43,14 @@ public class Post {
     public long getTimestamp() {
         return timestamp;
     }
-    public int getLikes() {
-        return likes;
+    public List<String> getLikes() {
+        return userIdLikes == null ? Collections.emptyList() : userIdLikes;
     }
+
+    public int getNumLikes(){
+        return userIdLikes == null ? 0 : userIdLikes.size();
+    }
+
     public String getId() {
         return id;
     }

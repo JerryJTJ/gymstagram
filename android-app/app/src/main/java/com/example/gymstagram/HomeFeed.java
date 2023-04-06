@@ -1,6 +1,7 @@
 package com.example.gymstagram;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -96,12 +97,13 @@ public class HomeFeed extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     following = response.body().getFollowing();
-                    Log.i("hhhh", "onResponse: following: " + following);
                     if (following!= null){
                         for (int i = 0; i<following.size(); i++){
                             String followedUserID = following.get(i);
-                            Log.i("hhhh", "onViewCreated: " + followedUserID);
+
+                            //Get all posts from followed user
                             Call<List<Post>> allPostsByUser = ApiClient.getPostService().getAllPostsByUserId(followedUserID);
+
                             allPostsByUser.enqueue(new Callback<List<Post>>() {
                                 @Override
                                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
@@ -112,10 +114,11 @@ public class HomeFeed extends Fragment {
                                         String id = postsByUser.get(i).getId();
                                         List<Comment> commentsList = postsByUser.get(i).getComments();
                                         Log.i("hhhh", "onResponse: " + commentsList);
-                                        String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
+                                        int numLikesToDisplay = postsByUser.get(i).getNumLikes();
+                                        boolean liked = postsByUser.get(i).getLikes().contains(MainActivity.userId);
                                         String postContent = postsByUser.get(i).getDescription();
-                                        String numLikesToDisplay = postsByUser.get(i).getLikes() + " likes";
-                                        CardForPost cardView = new CardForPost(getContext());
+                                        CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
+                                        String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
                                         cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay, commentsList);
                                         cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
@@ -125,9 +128,11 @@ public class HomeFeed extends Fragment {
 
                                 @Override
                                 public void onFailure(Call<List<Post>> call, Throwable t) {
-                                    Log.e("hhhh", "could not get posts by userid");
+                                    // Handle network error
+                                    Log.e("hhhh", "Network error: " + t.getMessage());
                                 }
                             });
+
                         }
                     }
                 }

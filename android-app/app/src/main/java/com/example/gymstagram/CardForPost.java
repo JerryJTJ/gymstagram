@@ -9,12 +9,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.gymstagram.model.Comment;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.ApiClient;
+import com.example.gymstagram.model.Post;
+import com.example.gymstagram.model.User;
+import com.example.gymstagram.retrofit.MealAPI;
+import com.example.gymstagram.retrofit.PostAPI;
 import com.example.gymstagram.retrofit.RetrofitService;
 import com.example.gymstagram.retrofit.UserAPI;
 
@@ -45,15 +50,31 @@ public class CardForPost extends LinearLayout {
     ImageView addCommentButton;
 
     boolean toggleLike;
+    //false if already liked, true if not liked
     int numm;
     String postID;
     LinearLayout linearLayout;
     LinearLayout thewholecommentthingLinLayout ;
 
-    public CardForPost(Context context)
+    public CardForPost(Context context, boolean liked, int numLikes)
     {
         super(context);
         initControl(context);
+
+        //Check if post is already liked
+        toggleLike = !liked;
+
+        numm = numLikes;
+
+        if(toggleLike){
+            //Not liked
+            likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+        }
+        else{
+            //Liked
+            likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+        }
+
     }
     private void initControl(Context context)
     {
@@ -77,19 +98,63 @@ public class CardForPost extends LinearLayout {
         toggleShowComment = true;
         toggleLike = true;
         thewholecommentthingLinLayout.setVisibility(GONE);
+        RetrofitService retrofitService = new RetrofitService();
+        PostAPI postAPI = retrofitService.getRetrofit().create(PostAPI.class);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (toggleLike){
-                    numm += 1;
-                    numLikes.setText(numm + " likes");
-                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
-                    //TODO:call like API
+                    //LIKE POST
+                    Log.d("JERRY", "LIKE POST");
+
+                    Call<Void> likeCall = postAPI.likePost(postID, MainActivity.userId);
+
+                    Log.d("JERRY", "POST ID " + postID);
+                    Log.d("Jerry", "user id " + MainActivity.userId);
+
+                    likeCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                numm += 1;
+                                numLikes.setText(numm + " likes");
+                                likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
+                            } else {
+                                Toast.makeText(getContext(), "Error liking", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getContext(), "Error liking", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 else{
-                    numm -= 1;
-                    numLikes.setText(numm + " likes");
-                    likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+                    //UNLIKE POST
+                    Call<Void> unlikeCall = postAPI.unlikePost(postID, MainActivity.userId);
+                    Log.d("JERRY", "UNLIKE POST");
+
+                    unlikeCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                // Post unliked successfully
+                                numm -= 1;
+                                numLikes.setText(numm + " likes");
+                                likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
+                            } else {
+                                Toast.makeText(getContext(), "Error unliking", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getContext(), "Error unliking", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
                 toggleLike = !toggleLike;
             }
@@ -130,7 +195,7 @@ public class CardForPost extends LinearLayout {
             }
         });
     }
-    public void updateCard(String id,String userID_, String locAndDate, String post_content, String num_likes, List<Comment> listComments){
+    public void updateCard(String id,String userID_, String locAndDate, String post_content, int num_likes, List<Comment> listComments){
         post_id = id;
         RetrofitService retrofitService = new RetrofitService();
         UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
@@ -150,8 +215,9 @@ public class CardForPost extends LinearLayout {
 
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
-        numm = ThreadLocalRandom.current().nextInt(0, 10 + 1);
-        numLikes.setText(numm + " likes");
+        
+        numLikes.setText(num_likes + " likes");
+
 //        theres a setVisibility(GONE) if we don't want to show "0 liked"
         Collections.reverse(listComments);
         for (int i = 0; i < listComments.size(); i++){
