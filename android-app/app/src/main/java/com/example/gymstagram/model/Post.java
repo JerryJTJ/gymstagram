@@ -12,8 +12,6 @@ public class Post {
     private String description;
     private List<String> mediaIds;
     private List<String> userIdLikes;
-    private List<String> comments;
-    //List<Comment>
     private long timestamp;
 
 
@@ -32,7 +30,6 @@ public class Post {
         userIdLikes = Collections.emptyList();
         mediaIds = photos;
 
-        comments = Collections.emptyList();
     }
     public String getDescription(){
         return description;
