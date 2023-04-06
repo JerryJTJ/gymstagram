@@ -28,7 +28,6 @@ public class Post {
         mediaIds = Collections.emptyList();
         userIdLikes = Collections.emptyList();
         comments = Collections.emptyList();
-        timestamp = 1;
     }
     public String getDescription(){
         return description;
@@ -45,7 +44,7 @@ public class Post {
         return timestamp;
     }
     public List<String> getLikes() {
-        return userIdLikes;
+        return userIdLikes == null ? Collections.emptyList() : userIdLikes;
     }
 
     public int getNumLikes(){
