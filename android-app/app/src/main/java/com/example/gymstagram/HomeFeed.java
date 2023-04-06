@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.gymstagram.databinding.FragmentHomeFeedBinding;
+import com.example.gymstagram.model.Comment;
 import com.example.gymstagram.model.Post;
 import com.example.gymstagram.model.User;
 import com.example.gymstagram.retrofit.ApiClient;
@@ -116,10 +117,12 @@ public class HomeFeed extends Fragment {
                                             for (int i = 0; i < posts.size(); i++) {
                                                 String userID = posts.get(i).getUserId();
                                                 String id = posts.get(i).getId();
-                                                List<String> photos = postsByUser.get(i).getphoto();
+                                                List<String> photos = posts.get(i).getphoto();
+                                                List<Comment> commentsList = posts.get(i).getComments();
+
                                                 String photo = null;
                                                 if (!posts.get(i).getphoto().isEmpty()){
-                                                    photo = postsByUser.get(i).getphoto().get(0);
+                                                    photo = posts.get(i).getphoto().get(0);
                                                 }
                                                 String dateAndLocation = convertTime(posts.get(i).getTimestamp());
                                                 String postContent = posts.get(i).getDescription();
@@ -128,7 +131,7 @@ public class HomeFeed extends Fragment {
 
                                                 CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
 
-                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
+                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo, commentsList);
 
 
                                                 cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));

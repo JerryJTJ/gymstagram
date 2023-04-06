@@ -13,6 +13,7 @@ public class Post {
     private List<String> mediaIds;
     private List<String> userIdLikes;
     private long timestamp;
+    private List<Comment> comments;
 
 
     public Post(){
@@ -58,5 +59,9 @@ public class Post {
 
     public String getId() {
         return id;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 }
