@@ -172,6 +172,7 @@ public class CardForPost extends LinearLayout {
         post_text.setText(post_content);
         numLikes.setText(num_likes + " likes");
 
+
         postID = id;
     }
 }

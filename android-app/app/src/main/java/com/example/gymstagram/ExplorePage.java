@@ -89,6 +89,8 @@ public class ExplorePage extends Fragment {
 
                             cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
 
+
+                            cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo);
                             cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
 
                             linearLayout.addView(cardView);
