@@ -12,7 +12,6 @@ public class Post {
     private String description;
     private List<String> mediaIds;
     private List<String> userIdLikes;
-    //List<Comment>
     private long timestamp;
     private List<Comment> comments;
 
@@ -21,16 +20,23 @@ public class Post {
         userId = "some title";
         description = "some description";
     }
-    public Post(String id_, String userId_, String description_){
+
+    public Post(String id_, String userId_, String description_, List<String> photos){
         id = id_;
         userId = userId_;
         description = description_;
-        mediaIds = Collections.emptyList();
+
+
+        mediaIds = photos;
         userIdLikes = Collections.emptyList();
-        comments = Collections.emptyList();
+        mediaIds = photos;
+
     }
     public String getDescription(){
         return description;
+    }
+    public List<String> getphoto(){
+        return mediaIds;
     }
     public String getUserId() { return userId; }
 //    public String getDateCreated() {

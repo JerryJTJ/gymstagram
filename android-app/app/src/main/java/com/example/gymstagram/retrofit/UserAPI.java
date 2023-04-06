@@ -16,6 +16,9 @@ public interface UserAPI {
     @GET("/users/{userId}")
     Call<User> getUserById(@Path("userId") String userId);
 
+    @GET("/photo/{photoId}")
+    Call<Void> getphoto(@Path("photoId") String photoId);
+
     @PUT("/users/{followerId}/follow/{receiverId}")
     Call<Void> followUser(@Path("followerId") String followerId, @Path("receiverId") String receiverId);
 

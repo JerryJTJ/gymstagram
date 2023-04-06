@@ -107,22 +107,40 @@ public class HomeFeed extends Fragment {
                             allPostsByUser.enqueue(new Callback<List<Post>>() {
                                 @Override
                                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                                    List<Post> postsByUser = response.body();
-                                    Log.i("hhhh", "onResponse: postsByUser: " + postsByUser);
-                                    for (int i = 0; i < postsByUser.size(); i++) {
-                                        String userIDD = postsByUser.get(i).getUserId();
-                                        String id = postsByUser.get(i).getId();
-                                        List<Comment> commentsList = postsByUser.get(i).getComments();
-                                        Log.i("hhhh", "onResponse: " + commentsList);
-                                        int numLikesToDisplay = postsByUser.get(i).getNumLikes();
-                                        boolean liked = postsByUser.get(i).getLikes().contains(MainActivity.userId);
-                                        String postContent = postsByUser.get(i).getDescription();
-                                        CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
-                                        String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
-                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay, commentsList);
-                                        cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+                                    if (response.isSuccessful()) {
+                                        List<Post> posts = response.body();
+                                        //show recent posts first
+                                        Collections.reverse(posts);
+                                        if (posts != null){
 
-                                        linearLayout.addView(cardView);
+                                            List<Post> postsByUser = response.body();
+                                            for (int i = 0; i < posts.size(); i++) {
+                                                String userID = posts.get(i).getUserId();
+                                                String id = posts.get(i).getId();
+                                                List<String> photos = posts.get(i).getphoto();
+                                                List<Comment> commentsList = posts.get(i).getComments();
+
+                                                String photo = null;
+                                                if (!posts.get(i).getphoto().isEmpty()){
+                                                    photo = posts.get(i).getphoto().get(0);
+                                                }
+                                                String dateAndLocation = convertTime(posts.get(i).getTimestamp());
+                                                String postContent = posts.get(i).getDescription();
+                                                int numLikesToDisplay = posts.get(i).getNumLikes();
+                                                boolean liked = posts.get(i).getLikes().contains(MainActivity.userId);
+
+                                                CardForPost cardView = new CardForPost(getContext(), liked, numLikesToDisplay);
+
+                                                cardView.updateCard(id, userID,dateAndLocation,postContent, numLikesToDisplay, photo, commentsList);
+
+
+                                                cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+
+                                                linearLayout.addView(cardView);
+                                            }
+                                        }
+                                    } else {
+                                        // Handle HTTP error
                                     }
                                 }
 
