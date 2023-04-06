@@ -18,19 +18,22 @@ public interface PostAPI {
     @GET("posts")
     Call<List<Post>> getAllPosts();
 
+    @GET("/posts/{postId}")
+    Call<Post> getPostById(@Path("postId") String postId);
+
+    @GET("/posts/user/{userId}")
+    Call<List<Post>> getAllPostsByUserId(@Path("userId") String userId);
+
     @POST("posts")
     Call<Post> createPost(@Body Post post);
-
-    @PUT("/{id}/like")
-    void likePost(@Path("id") String postID);
 
     @Multipart
     @POST("/photo")
     Call<String> addPhoto(@Part MultipartBody.Part image);
 
+    @PUT("/posts/{id}/like/{userId}")
+    Call<Void> likePost(@Path("id") String id, @Path("userId") String userId);
 
-    @GET("/posts/user/{userId}")
-    public Call<List<Post>> getAllPostsByUserId(@Path("userId") String userId);
 
 
 }

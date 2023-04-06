@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.example.gymstagram.model.Post;
 import com.example.gymstagram.model.User;
+import com.example.gymstagram.retrofit.MealAPI;
+import com.example.gymstagram.retrofit.PostAPI;
 import com.example.gymstagram.retrofit.RetrofitService;
 import com.example.gymstagram.retrofit.UserAPI;
 
@@ -54,16 +57,22 @@ public class CardForPost extends LinearLayout {
         likeButton = (ImageView)findViewById(R.id.like);
 
         toggleLike = true;
+
+        //Make retrofit service
+        RetrofitService retrofitService = new RetrofitService();
+        PostAPI postAPI = retrofitService.getRetrofit().create(PostAPI.class);
+
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (toggleLike){
+                    //LIKE POST
                     numm += 1;
                     numLikes.setText(numm + " likes");
                     likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_filled));
-                    //TODO:call like API
                 }
                 else{
+                    //UNLIKE POST
                     numm -= 1;
                     numLikes.setText(numm + " likes");
                     likeButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.heart_empty));
@@ -72,7 +81,7 @@ public class CardForPost extends LinearLayout {
             }
         });
     }
-    public void updateCard(String id,String userID_, String locAndDate, String post_content, String num_likes){
+    public void updateCard(String id,String userID_, String locAndDate, String post_content, int num_likes){
         RetrofitService retrofitService = new RetrofitService();
         UserAPI userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         Call<User> postUser = userAPI.getUserById(userID_);
@@ -91,9 +100,7 @@ public class CardForPost extends LinearLayout {
 
         locationAndDate.setText(locAndDate);
         post_text.setText(post_content);
-        numm = ThreadLocalRandom.current().nextInt(0, 10 + 1);
-        numLikes.setText(numm + " likes");
-//        theres a setVisibility(GONE) if we don't want to show "0 liked"
+        numLikes.setText(num_likes + " likes");
 
         postID = id;
     }

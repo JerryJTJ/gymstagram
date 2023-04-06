@@ -95,36 +95,44 @@ public class HomeFeed extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     following = response.body().getFollowing();
-                    Log.i("hhhh", "onResponse: following: " + following);
                     if (following!= null){
                         for (int i = 0; i<following.size(); i++){
                             String followedUserID = following.get(i);
-                            Log.i("hhhh", "onViewCreated: " + followedUserID);
+
+                            //Get all posts from followed user
                             Call<List<Post>> allPostsByUser = ApiClient.getPostService().getAllPostsByUserId(followedUserID);
+
                             allPostsByUser.enqueue(new Callback<List<Post>>() {
                                 @Override
                                 public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                                    List<Post> postsByUser = response.body();
-                                    Log.i("hhhh", "onResponse: postsByUser: " + postsByUser);
-                                    for (int i = 0; i < postsByUser.size(); i++) {
-                                        String userIDD = postsByUser.get(i).getUserId();
-                                        String id = postsByUser.get(i).getId();
-                                        String dateAndLocation = convertTime(postsByUser.get(i).getTimestamp());
-                                        String postContent = postsByUser.get(i).getDescription();
-                                        String numLikesToDisplay = postsByUser.get(i).getLikes() + " likes";
-                                        CardForPost cardView = new CardForPost(getContext());
-                                        cardView.updateCard(id, userIDD,dateAndLocation,postContent, numLikesToDisplay);
-                                        cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+                                    if (response.isSuccessful()) {
+                                        List<Post> postsByUser = response.body();
 
-                                        linearLayout.addView(cardView);
+                                        for (Post post : postsByUser) {
+                                            String userIDD = post.getUserId();
+                                            String id = post.getId();
+                                            String dateAndLocation = convertTime(post.getTimestamp());
+                                            String postContent = post.getDescription();
+                                            int numLikesToDisplay = post.getNumLikes();
+                                            CardForPost cardView = new CardForPost(getContext());
+                                            cardView.updateCard(id, userIDD, dateAndLocation, postContent, numLikesToDisplay);
+                                            cardView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.card));
+
+                                            linearLayout.addView(cardView);
+                                        }
+                                    } else {
+                                        // Handle HTTP error
+                                        Log.e("hhhh", "HTTP error: " + response.code());
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<List<Post>> call, Throwable t) {
-                                    Log.e("hhhh", "could not get posts by userid");
+                                    // Handle network error
+                                    Log.e("hhhh", "Network error: " + t.getMessage());
                                 }
                             });
+
                         }
                     }
                 }
