@@ -57,7 +57,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class register extends Fragment {
     private FragmentRegisterBinding binding;
     Button done, reg;
-    private EditText un, pw, em, cw, tw;
+    private EditText un, pw, em, cw, gw;
     public register() {
         // Required empty public constructor
     }
@@ -83,6 +83,8 @@ public class register extends Fragment {
         un = view.findViewById(R.id.usernameregister);
         pw = view.findViewById(R.id.passwordregister);
         em = view.findViewById(R.id.emailregister);
+        cw = view.findViewById(R.id.cwregister);
+        gw = view.findViewById(R.id.gwregister);
 
         reg = view.findViewById(R.id.registerbutton);
         reg.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +100,8 @@ public class register extends Fragment {
         final String username = un.getText().toString().trim();
         final String password = pw.getText().toString().trim();
         final String email = em.getText().toString().trim();
+        final String currweight = cw.getText().toString().trim();
+        final String goalweight = gw.getText().toString().trim();
 
         new Thread(new Runnable() {
             @Override
@@ -116,8 +120,8 @@ public class register extends Fragment {
                     jsonParam.put("password", password);
                     jsonParam.put("email", email);
                     jsonParam.put("following", new JSONArray());
-                    jsonParam.put("currentWeight", 0);
-                    jsonParam.put("targetWeight", 0);
+                    jsonParam.put("currentWeight", currweight);
+                    jsonParam.put("targetWeight", goalweight);
 
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     os.writeBytes(jsonParam.toString());
