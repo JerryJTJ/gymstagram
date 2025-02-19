@@ -25,7 +25,7 @@ To post your own content, click on the "Add Post" button in the bottom navigatio
 You can view a list of people you are following or your followers by clicking on your profile in the bottom navigation bar.
 
 # Credits
-This app was created as a project for CS446.
+This app was created as a project for CS446. This is an archive of the original repo [here](https://github.com/mhyeun/gymstagram).
 
 # License
 This project is licensed under the MIT License.
